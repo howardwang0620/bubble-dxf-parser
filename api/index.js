@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var formidable = require('formidable');
+var helmet = require('helmet');
 var fs = require('fs');
 var path = require('path')
 
@@ -12,7 +13,8 @@ app.use(express.static('../public'));
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+app.use(helmet());
 
 app.get('/', (req, res) => {
 	res.json("HELLO");
@@ -67,7 +69,7 @@ app.post('/upload', (req, res) => {
 });
 
  
-const PORT = 1234;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, function() {
 	console.log(`Listening on ${PORT}`);
 });
