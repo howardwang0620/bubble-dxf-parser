@@ -24,15 +24,7 @@ function handleEntityCalculation(entity) {
 	}
 }
 
-function handleArc(entity) {
-	return {
-		length: entity.radius * entity.angleLength,
-		area: 0
-	}
-}
-
 function handleLine(entity) {
-	// console.log(entity);
 	const x1 = entity.vertices[0].x;
 	const y1 = entity.vertices[0].y;
 
@@ -53,11 +45,11 @@ function handleLine(entity) {
 //area calculations derived from Area of a polygon using Coordinate Geometry
 function handlePolyLine(entity) {
 	let length = 0;
-
 	let hasArea = entity.shape || 
 					(entity.vertices[0].x == entity.vertices[entity.vertices.length - 1].x && 
 					entity.vertices[0].y == entity.vertices[entity.vertices.length - 1].y);
 	let area = 0;
+
 	for(var i = 0; i < entity.vertices.length; i++) {
 
 		const x1 = entity.vertices[i].x;
@@ -127,7 +119,13 @@ function handleEllipse(entity) {
 		length: circumference,
 		area: area,
 	};
+}
 
+function handleArc(entity) {
+	return {
+		length: entity.radius * entity.angleLength,
+		area: 0
+	};
 }
 
 module.exports = { handleEntityCalculation };

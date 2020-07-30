@@ -8,16 +8,11 @@ module.exports = class BSpline {
 		this.order = order;
 		this.spanLengths = [];
 		this.totalLength = 0.0;
-        // console.log(this.order - 1, "-", this.knots.length - this.order);
-        // console.log("cp:", this.cp);
-        // console.log("knots:", this.knots);
 	}
 
 	calcTotalLength() {
 		var spanLengths = [];
 		var totalLength = 0.0;
-
-
 		for(var i = this.order - 1; i < this.knots.length - this.order; i++) {
 			// console.log(i);
 			let t0 = this.knots[i];
@@ -32,13 +27,11 @@ module.exports = class BSpline {
 				return Math.sqrt(x * x + y * y);
 			}.bind(this));
 
-
 			spanLengths.push(spanLength);
 			totalLength += spanLength;
 		}
 
 		this.spanLengths = spanLengths;
-		// console.log("SPAN LENGTHS: ", spanLengths);
 		this.totalLength = totalLength;
 
 		return totalLength;
@@ -47,16 +40,12 @@ module.exports = class BSpline {
 
 	gaussLegendereIntegrate(a, b, o, callback) {
 		var result = 0;
-		// let gaussQuadrature = gaussQ(32);
 		let wgts = GAUSS_CONSTANTS.G_WEIGHTS;
 		let absc = GAUSS_CONSTANTS.G_ABSCISSA;
 
 		for(var i = 0; i < o; i++) {
 			let a0 = absc[i];
             let w0 = wgts[i];
-            // var t = z * a0 + z;
-            // result += w0 * callback(t);
-            // console.log("WHAT:", (b + a + a0 - (b - a)));
             result += w0 * callback(0.5 * (b + a + a0 - (b - a)));
 		}
 
