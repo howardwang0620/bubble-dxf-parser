@@ -3,13 +3,16 @@ var bodyParser = require('body-parser');
 var formidable = require('formidable');
 var helmet = require('helmet');
 var fs = require('fs');
-var path = require('path')
+var path = require('path');
+var cors = require('cors');
 
 var ReadRemoteURL = require('./readRemoteURL.js');
 var DXFParser = require('./parseDXF.js');
 
 var app = express();
-app.use(express.static('../public'));
+
+app.use(express.static(path.join(path.resolve('./'), 'public')));
+app.use(cors())
 app.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -17,6 +20,7 @@ app.use(bodyParser.json());
 app.use(helmet());
 
 app.get('/', (req, res) => {
+    console.log(path.join(path.resolve('./'), 'public'));
 	res.json("HELLO");
 });
 
