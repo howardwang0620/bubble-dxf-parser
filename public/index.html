@@ -1,0 +1,33 @@
+<html>
+	<head>
+	</head>
+
+	<body>
+		<form id="fileForm" method="post">
+			<input type="file" name="file">
+			<input type="submit" name="submit">
+		</form>
+	</body>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script>
+		$('#fileForm').submit(function(e) {
+			e.preventDefault();
+
+			var formData = new FormData($('#fileForm')[0]);
+			console.log(Array.from(formData));
+		    $.ajax({
+		        url: '/upload',
+		        type: 'post',
+		        processData: false,
+				contentType: false,
+				cache: false,
+				data : formData,
+				success: function(data){
+					console.log(data);
+      			}
+		    });
+		});
+
+	</script>
+</html>
