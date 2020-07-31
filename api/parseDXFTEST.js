@@ -61,9 +61,6 @@ function parseDXF(fileText, unit) {
 
     		//calcs.message occurs when entity calculation is not supported
     		if(!calcs.message) {
-
-    			res.totLength += calcs.length;
-
     			//get index of layer within res' layer array
     			// var layerIndex = layerDictionary[entity.layer];
     			// var layerArray = res.layers[layerIndex];

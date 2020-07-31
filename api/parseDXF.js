@@ -60,8 +60,6 @@ function parseDXF(fileText, unit) {
     		//calcs.message occurs when entity calculation is not supported
     		if(!calcs.message) {
 
-    			res.totLength += calcs.length;
-
     			//get index of layer within res' layer array
     			var layerIndex = layerDictionary[entity.layer];
     			var layerArray = res.layers[layerIndex];
@@ -70,7 +68,7 @@ function parseDXF(fileText, unit) {
     			layerArray[4] += calcs.area;
 
     // 			//apply total length calculation
-    //     		res.totLength += calcs.length;
+        		res.totLength += calcs.length;
 
     //     		//apply layer specific area and length calculations
     //     		res.layers[entity.layer].length += calcs.length;
