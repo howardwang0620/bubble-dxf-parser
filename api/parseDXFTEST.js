@@ -42,6 +42,7 @@ function parseDXF(fileText, unit) {
     		//layer indices within layerDictionary
 
     		res.layers[layer.name] = {
+                name: layer.name,
     			color: color,
     			colorIndex: colorIndex,
     			length: 0,
