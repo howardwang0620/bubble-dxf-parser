@@ -11,8 +11,9 @@ var DXFParser = require('./parseDXF.js');
 
 var app = express();
 
-app.use(express.static(path.join(path.resolve('./'), 'public')));
-app.use(cors())
+// app.use(express.static(path.join(path.resolve('./'), 'public')));
+app.use(express.static('../public'));
+app.use(cors());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -20,7 +21,6 @@ app.use(bodyParser.json());
 app.use(helmet());
 
 app.get('/', (req, res) => {
-    console.log(path.join(path.resolve('./'), 'public'));
 	res.json("HELLO");
 });
 
