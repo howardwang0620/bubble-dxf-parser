@@ -75,7 +75,7 @@ function parseDXF(fileText) {
         	} else {
 
         		//errors array contains entity types that are not supported
-        		errors.push(entity.type);
+        		res.errors.push(entity.type);
         		console.log(`not possible for entity type: ${entity.type}\n`);
         	}
     	}
