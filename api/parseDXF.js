@@ -8,8 +8,9 @@ function parseDXF(fileText) {
     	var dxf = parser.parseSync(fileText);
 
     	//returning object
+    	//layers is now an array holding [layername, color, colorindex, length, area]
     	var res = {
-    		layers: {},
+    		layers: [],
     		totLength: 0,
     		image: null,
     		xExtent: dxf.header.$EXTMAX.x - dxf.header.$EXTMIN.x,
@@ -18,16 +19,34 @@ function parseDXF(fileText) {
     	};
     	var totLength = 0;
 
-    	//fill colors object using layers in table secion
+    	//fill colors object using layers in table section
+    	var layerDictionary = {};
+    	var i = 0;
     	for (const layerNum in dxf.tables.layer.layers) {
     		var layer = dxf.tables.layer.layers[layerNum];
-    		res.layers[layer.name] = {
-    			color: layer.color ? layer.color : null,
-    			colorIndex: layer.colorIndex ? layer.colorIndex : null,
-    			length: 0,
-    			area: 0,
-    		};
+    		const color = layer.color ? layer.color : null;
+    		const colorIndex = layer.colorIndex ? layer.colorIndex : null;
+
+    		layerDictionary[layer.name] = i;
+    		res.layers.push([layer.name, color, colorIndex, 0, 0]);
+    		i++;
+
+
+    		//below code is for objectfying layers in return object
+    		//bubbleio doesnt handle well so were building array and storing
+    		//layer indices within layerDictionary
+
+    		// res.layers[layer.name] = {
+    		// 	color: layer.color ? layer.color : null,
+    		// 	colorIndex: layer.colorIndex ? layer.colorIndex : null,
+    		// 	length: 0,
+    		// 	area: 0,
+    		// };
     	}
+
+    	// console.log(layerDictionary);
+
+
 
     	// Iterate through entities inside dxf.entities and perform calculations accordingly
     	for (const entityNum in dxf.entities) {
@@ -37,12 +56,21 @@ function parseDXF(fileText) {
     		//calcs.message occurs when entity calculation is not supported
     		if(!calcs.message) {
 
-    			//apply total length calculation
-        		res.totLength += calcs.length;
+    			res.totLength += calcs.length;
 
-        		//apply layer specific area and length calculations
-        		res.layers[entity.layer].length += calcs.length;
-				res.layers[entity.layer].area += calcs.area;
+    			//get index of layer within res' layer array
+    			var layerIndex = layerDictionary[entity.layer];
+    			var layerArray = res.layers[layerIndex];
+
+    			layerArray[3] += calcs.length;
+    			layerArray[4] += calcs.area;
+
+    // 			//apply total length calculation
+    //     		res.totLength += calcs.length;
+
+    //     		//apply layer specific area and length calculations
+    //     		res.layers[entity.layer].length += calcs.length;
+				// res.layers[entity.layer].area += calcs.area;
 
         	} else {
 

@@ -5,6 +5,7 @@ var helmet = require('helmet');
 var fs = require('fs');
 var path = require('path');
 var cors = require('cors');
+var fetch = require('node-fetch');
 
 var ReadRemoteURL = require('./readRemoteURL.js');
 var DXFParser = require('./parseDXF.js');
@@ -20,8 +21,24 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(helmet());
 
-app.get('/', (req, res) => {
-	res.json("HELLO");
+app.get('/fetchtest', (req, res) => {
+    const fileURL = "https://s3.amazonaws.com/appforest_uf/f1595892674477x375947631632813440/sample.dxf";
+    const apiURL = "https://bubble-dxf-parser.herokuapp.com/remoteurl";
+    fetch(apiURL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            url: fileURL,
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        res.json(data);
+    });
+    // .catch(error => console.log(error));
 });
 
 //receives remote url as body and parses DXF file
