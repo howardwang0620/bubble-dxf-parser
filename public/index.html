@@ -42,7 +42,7 @@
 
 			const inputs = $('#textForm').serializeArray();
 			const url = inputs[0].value; 
-			fetch('https://bubble-dxf-parser.herokuapp.com/remoteurl', {
+			fetch('/remoteurl', {
 				method: 'POST',
 			    headers: {
 			        'Content-Type': 'application/json'
