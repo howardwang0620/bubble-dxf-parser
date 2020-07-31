@@ -46,9 +46,10 @@ app.get('/fetchtest', (req, res) => {
 app.post('/remoteurl', (req, res) => {
 	console.log(req.body.url);
     const url = req.body.url;
+    const unit = req.body.unit;
     ReadRemoteURL.getBodyURL(url).then(function(ret) {
         console.log("FINISHED GRABBING FILE");
-        const dxfObj = DXFParser.parseDXF(ret);
+        const dxfObj = DXFParser.parseDXF(ret, unit);
         console.log(dxfObj);
         console.log("sending obj...");
         res.json(dxfObj);
@@ -59,9 +60,10 @@ app.post('/remoteurl', (req, res) => {
 app.post('/remoteurl-v2obj', (req, res) => {
     console.log(req.body.url);
     const url = req.body.url;
+    const unit = req.body.unit;
     ReadRemoteURL.getBodyURL(url).then(function(ret) {
         console.log("FINISHED GRABBING FILE");
-        const dxfObj = DXFParserTEST.parseDXF(ret);
+        const dxfObj = DXFParserTEST.parseDXF(ret, unit);
         console.log(dxfObj);
         console.log("sending obj...");
         res.json(dxfObj);

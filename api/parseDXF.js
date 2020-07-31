@@ -1,20 +1,24 @@
 const DxfParser = require('dxf-parser');
 const EntityCalculation = require('./EntityUtilities/Utilities.js');
 
-function parseDXF(fileText) {
+function parseDXF(fileText, unit) {
 	var parser = new DxfParser();
     try {
      	//parse dxf into readable object
     	var dxf = parser.parseSync(fileText);
 
-    	//returning object
+    	const xExtent = Math.round((dxf.header.$EXTMAX.x - dxf.header.$EXTMIN.x) * 100) / 100;
+        const yExtent = Math.round((dxf.header.$EXTMAX.y - dxf.header.$EXTMIN.y) * 100) / 100;
+        if(!unit) unit = "";
+        const extents = `${xExtent}${unit} x ${yExtent}${unit}`;
+
+        //returning object
     	//layers is now an array holding [layername, color, colorindex, length, area]
     	var res = {
     		layers: [],
     		totLength: 0,
     		image: null,
-    		xExtent: dxf.header.$EXTMAX.x - dxf.header.$EXTMIN.x,
-    		yExtent: dxf.header.$EXTMAX.y - dxf.header.$EXTMIN.y,
+    		extents: extents,
     		errors: [],
     	};
     	var totLength = 0;
