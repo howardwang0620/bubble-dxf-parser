@@ -8,23 +8,33 @@
   },
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "test": "mocha --reporter list"
   },
   "author": "howard wang",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "canvas": "^2.6.1",
     "cors": "^2.8.5",
     "dxf-parser": "^1.0.0-alpha.2",
     "express": "^4.17.1",
     "file-system": "^2.2.2",
     "formidable": "^1.2.2",
     "gauss-quadrature": "^1.0.0",
+    "gl": "^4.5.3",
     "helmet": "^3.23.3",
     "http": "0.0.1-security",
+    "image-data-uri": "^2.0.1",
+    "mocha": "^8.1.0",
     "node-fetch": "^2.6.0",
     "nodemon": "^2.0.4",
     "request": "^2.88.2",
-    "three-dxf": "^0.3.1"
+    "three": "^0.119.1",
+    "three-canvas-renderer": "^2.0.0",
+    "three-dxf": "^0.3.1",
+    "three-png-stream": "^1.0.3",
+    "three-projector-renderer": "^1.0.1",
+    "three-software-renderer": "^1.2.0"
   }
 }

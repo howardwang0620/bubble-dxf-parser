@@ -9,6 +9,7 @@ var fetch = require('node-fetch');
 
 var ReadRemoteURL = require('./readRemoteURL.js');
 var DXFParser = require('./parseDXF.js');
+var DXFParserTEST = require('./parseDXFTEST.js');
 
 var app = express();
 
@@ -41,13 +42,26 @@ app.get('/fetchtest', (req, res) => {
     // .catch(error => console.log(error));
 });
 
-//receives remote url as body and parses DXF file
+//receives remote url as body and parses DXF file and reutrns DXF object with arrays
 app.post('/remoteurl', (req, res) => {
 	console.log(req.body.url);
     const url = req.body.url;
     ReadRemoteURL.getBodyURL(url).then(function(ret) {
         console.log("FINISHED GRABBING FILE");
         const dxfObj = DXFParser.parseDXF(ret);
+        console.log(dxfObj);
+        console.log("sending obj...");
+        res.json(dxfObj);
+    });
+});
+
+//receives remote url as body and parses DXF file and returns DXF object with objects
+app.post('/remoteurl-v2obj', (req, res) => {
+    console.log(req.body.url);
+    const url = req.body.url;
+    ReadRemoteURL.getBodyURL(url).then(function(ret) {
+        console.log("FINISHED GRABBING FILE");
+        const dxfObj = DXFParserTEST.parseDXF(ret);
         console.log(dxfObj);
         console.log("sending obj...");
         res.json(dxfObj);
