@@ -62,7 +62,7 @@ app.post('/remoteurl', (req, res) => {
             res.json(dxfObj);
         } catch(err) {
             console.log("Error building DXF obj");
-            throw new Error("Error with DXF Parse:", err.message);
+            throw new Error(err.message);
         }
     });
 });

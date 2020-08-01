@@ -4,8 +4,8 @@ const THREEdxf = require('./DXFImageConversion/three-dxf-node.js');
 function parseDXF(dxf, unit) {
 
     //get extents
-    const xExtent = Math.round((dxf.header.$EXTMAX.x - dxf.header.$EXTMIN.x) * 100) / 100;
-    const yExtent = Math.round((dxf.header.$EXTMAX.y - dxf.header.$EXTMIN.y) * 100) / 100;
+    const xExtent = roundTo3Dec(dxf.header.$EXTMAX.x - dxf.header.$EXTMIN.x);
+    const yExtent = roundTo3Dec(dxf.header.$EXTMAX.y - dxf.header.$EXTMIN.y);
     if(!unit) unit = "";
     const extents = `${xExtent}${unit} x ${yExtent}${unit}`;
 
@@ -57,11 +57,11 @@ function parseDXF(dxf, unit) {
             var layerIndex = layerDictionary[entity.layer];
             var layerArray = res.layers[layerIndex];
 
-            layerArray[3] += calcs.length;
-            layerArray[4] += calcs.area;
+            layerArray[3] += roundTo3Dec(calcs.length);
+            layerArray[4] += roundTo3Dec(calcs.area);
 
 //          //apply total length calculation
-            res.totLength += calcs.length;
+            res.totLength += roundTo3Dec(calcs.length);
 
 //          //apply layer specific area and length calculations
 //          res.layers[entity.layer].length += calcs.length;
@@ -78,5 +78,9 @@ function parseDXF(dxf, unit) {
     //return resulting dxf object
     return res;
 }
+
+function roundTo3Dec(num) {
+    return Math.round((num) * 1000) / 1000;
+}   
 
 module.exports = { parseDXF }

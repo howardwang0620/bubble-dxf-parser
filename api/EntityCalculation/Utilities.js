@@ -49,7 +49,7 @@ function handlePolyLine(entity) {
 					(entity.vertices[0].x == entity.vertices[entity.vertices.length - 1].x && 
 					entity.vertices[0].y == entity.vertices[entity.vertices.length - 1].y);
 	let area = 0;
-
+	console.log(entity.vertices);
 	for(var i = 0; i < entity.vertices.length; i++) {
 
 		const x1 = entity.vertices[i].x;
@@ -60,7 +60,7 @@ function handlePolyLine(entity) {
 		const y2 = entity.vertices[nextPoint].y;
 
 		//calculating length of polygon
-		length += Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y2, 2));
+		length += Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 
 		//calculating area of polygon
 		if(hasArea) area += (x1 * y2) - (x2 * y1);
