@@ -391,7 +391,7 @@ function drawPoint(entity, data) {
 
     material = new THREE.PointsMaterial( { size: 0.05, vertexColors: THREE.VertexColors } );
     point = new THREE.Points(geometry, material);
-    scene.add(point);
+    return point;
 }
 
 function drawDimension(entity, data) {

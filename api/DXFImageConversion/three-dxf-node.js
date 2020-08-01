@@ -8,7 +8,6 @@ const Shapes = require('./shapes.js');
 
 function drawDXF(data, width, height) {
 	var scene = new THREE.Scene();
-
 	var dims = {
         min: { x: false, y: false, z: false},
         max: { x: false, y: false, z: false}
@@ -78,7 +77,6 @@ function drawDXF(data, width, height) {
 
     var dataURL = canvas.toDataURL('image/jpeg');
     // console.log("************DATA URL************\n", dataURL);
-
     return dataURL;
 
     // var out = fs.createWriteStream(`./test-out.png`);
