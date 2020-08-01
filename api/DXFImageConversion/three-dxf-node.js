@@ -47,12 +47,13 @@ function drawDXF(data, width, height) {
     } else {
         vp_height = vp_width / aspectRatio;
     }
-    
+        
+    const zoom = 0.5;
     var viewPort = {
-        bottom: -vp_height / 2,
-        left: -vp_width / 2,
-        top: vp_height / 2,
-        right: vp_width / 2,
+        bottom: -vp_height / 2 - zoom,
+        left: -vp_width / 2 - zoom,
+        top: vp_height / 2 + zoom,
+        right: vp_width / 2 + zoom,
         center: {
             x: center.x,
             y: center.y
@@ -75,14 +76,15 @@ function drawDXF(data, width, height) {
 
 	renderer.render(scene, camera);
 
+    //save to png
+    var out = fs.createWriteStream(`./test-out.png`);
+	var canvasStream = canvas.pngStream();
+	canvasStream.on("data", function (chunk) { out.write(chunk); });
+	canvasStream.on("end", function () { console.log("done"); });
+
     var dataURL = canvas.toDataURL('image/jpeg');
     // console.log("************DATA URL************\n", dataURL);
     return dataURL;
-
-    // var out = fs.createWriteStream(`./test-out.png`);
-	// var canvasStream = canvas.pngStream();
-	// canvasStream.on("data", function (chunk) { out.write(chunk); });
-	// canvasStream.on("end", function () { console.log("done"); });
 
 }
 
