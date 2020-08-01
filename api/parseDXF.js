@@ -59,7 +59,7 @@ function parseDXF(dxf, unit) {
 
             layerArray[3] += roundTo3Dec(calcs.length);
             layerArray[4] += roundTo3Dec(calcs.area);
-
+            console.log(entity.type, ":", calcs.length);
 //          //apply total length calculation
             res.totLength += roundTo3Dec(calcs.length);
 

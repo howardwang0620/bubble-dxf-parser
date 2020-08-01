@@ -45,25 +45,33 @@ function handleLine(entity) {
 //area calculations derived from Area of a polygon using Coordinate Geometry
 function handlePolyLine(entity) {
 	let length = 0;
-	let hasArea = entity.shape || 
+	let closed = entity.shape || 
 					(entity.vertices[0].x == entity.vertices[entity.vertices.length - 1].x && 
 					entity.vertices[0].y == entity.vertices[entity.vertices.length - 1].y);
 	let area = 0;
-	console.log(entity.vertices);
-	for(var i = 0; i < entity.vertices.length; i++) {
+	for(var i = 0; i < entity.vertices.length - 1; i++) {
 
 		const x1 = entity.vertices[i].x;
 		const y1 = entity.vertices[i].y;
 
-		let nextPoint = (i == entity.vertices.length - 1) ? 0 : i + 1;
-		const x2 = entity.vertices[nextPoint].x;
-		const y2 = entity.vertices[nextPoint].y;
+		const x2 = entity.vertices[i + 1].x;
+		const y2 = entity.vertices[i + 1].y;
 
 		//calculating length of polygon
 		length += Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 
 		//calculating area of polygon
-		if(hasArea) area += (x1 * y2) - (x2 * y1);
+		if(closed) area += (x1 * y2) - (x2 * y1);
+	}
+
+	//calculate last closed point length of polygon
+	if(closed || entity.shape) {
+		const x1 = entity.vertices[entity.vertices.length - 1].x;
+		const y1 = entity.vertices[entity.vertices.length - 1].y;
+
+		const x2 = entity.vertices[0].x;
+		const y2 = entity.vertices[0].y;
+		length += Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 	}
 
 	//final calc of area
