@@ -7,15 +7,15 @@ function getBodyURL(url) {
 		url: url,
 		method: 'GET'
 	};
-	console.log("here we go...");
+	console.log("INIT...");
     return new Promise(function(resolve, reject) {
     	request.get(options, function(err, resp, body) {
-	    	console.log("requesting...");
+	    	console.log("Requesting URL...");
 			if (err) {
-				console.log("error .");
+				console.log("Error requesting URL");
 				reject(err);
 			} else {
-				console.log("success!");
+				console.log("Success! URL body gathered");
 				resolve(body);
 			}
 		});
