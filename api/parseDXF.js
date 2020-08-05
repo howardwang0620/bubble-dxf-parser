@@ -57,12 +57,12 @@ function parseDXF(dxf, unit) {
             var layerIndex = layerDictionary[entity.layer];
             var layerArray = res.layers[layerIndex];
 
-            layerArray[3] += roundTo3Dec(calcs.length);
-            layerArray[4] += roundTo3Dec(calcs.area);
+            layerArray[3] += calcs.length;
+            layerArray[4] += calcs.area;
             // console.log(entity.type, ":", calcs.length);
-//          //apply total length calculation
 
-            res.totLength += roundTo3Dec(calcs.length);
+            //apply total length calculation
+            res.totLength += calcs.length;
 
 //          //apply layer specific area and length calculations
 //          res.layers[entity.layer].length += calcs.length;
@@ -75,6 +75,16 @@ function parseDXF(dxf, unit) {
             console.log(`not possible for entity type: ${entity.type}\n`);
         }
     }
+
+    //reformat total length + length and areas of layer array
+    res.totLength = roundTo3Dec(res.totLength);
+    for(var i = 0; i < res.layers.length; i++) {
+        var layerArray = res.layers[i];
+        layerArray[3] = roundTo3Dec(layerArray[3]);
+        layerArray[4] = roundTo3Dec(layerArray[4]);
+    }   
+
+    console.log(res);
 
     //return resulting dxf object
     return res;
