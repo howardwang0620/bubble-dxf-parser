@@ -1,4 +1,5 @@
 var BSpline = require('./BSplineUtilities/bspline.js');
+var bspline = require('b-spline');
 /*
 	Area and length calculations depending on entity
 */
@@ -78,8 +79,8 @@ function handlePolyLine(entity) {
 
 	//return object
 	return {
-			length: length,
-			area: area,
+		length: length,
+		area: area,
 	};
 }
 
@@ -89,8 +90,32 @@ function handlePolyLine(entity) {
 */
 function handleSpline(entity) {
 	// console.log(entity);
-	var bspline = new BSpline(entity.controlPoints, entity.knotValues, entity.degreeOfSplineCurve + 1);
-	let length = bspline.calcTotalLength();
+	// var bspline = new BSpline(entity.controlPoints, entity.knotValues, entity.degreeOfSplineCurve + 1);
+	// let length = bspline.calcTotalLength();
+
+	const degree = entity.degreeOfSplineCurve;
+    const knots = entity.knotValues;
+
+    const cp = entity.controlPoints;
+    var points = Object.keys(cp).map((key) => [cp[key].x, cp[key].y]);
+
+    var length = 0;
+    var lastPoint;
+    for(var t = 0; t < 1; t += 0.0001) {
+    	var point = bspline(t, degree, points, knots);
+
+    	if(lastPoint) {
+    		const x1 = lastPoint[0];
+	    	const y1 = lastPoint[1];
+
+	    	const x2 = point[0];
+	    	const y2 = point[1];
+
+	    	length += Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    	}
+
+    	lastPoint = point;
+    }
 
 	return {
 		length: length,

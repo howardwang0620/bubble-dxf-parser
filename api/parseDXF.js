@@ -62,7 +62,6 @@ function parseDXF(dxf, unit) {
             // console.log(entity.type, ":", calcs.length);
 //          //apply total length calculation
 
-            console.log(calcs.length);
             res.totLength += roundTo3Dec(calcs.length);
 
 //          //apply layer specific area and length calculations

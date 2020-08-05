@@ -1,5 +1,5 @@
 var gaussQ = require("gauss-quadrature");
-var GAUSS_CONSTANTS = require('./GaussConstants.js')
+var GAUSS_CONSTANTS = require('./GaussConstants.js');
 
 module.exports = class BSpline {
 	constructor(controlPoints, knotVector, order) {
@@ -97,7 +97,7 @@ module.exports = class BSpline {
 	// Derivative of the x-component
     dx(t) {
         var p = 0.0;
-        let n = this.order;
+        let n = this.order - 1;
 
         for(var i = 0; i < this.cp.length - 1; i++) {
         	let u0 = this.knots[i + n + 1];
@@ -114,7 +114,7 @@ module.exports = class BSpline {
     // Derivative of the y-component
     dy(t) {
         var p = 0.0;
-        let n = this.order;
+        let n = this.order - 1;
 
         for(var i = 0; i < this.cp.length - 1; i++) {
         	let u0 = this.knots[i + n + 1];

@@ -11,6 +11,8 @@ var ReadRemoteURL = require('./readRemoteURL.js');
 var DXFParser = require('./parseDXF.js');
 var DXFParserObj = require('./parseDXF-Object.js');
 
+var bspline = require('b-spline');
+
 var app = express();
 app.use(express.static(path.join(path.resolve('./'), 'public')));
 // app.use(express.static('../public'));
@@ -126,7 +128,7 @@ app.post('/upload', (req, res) => {
 
             //parse dxf object
             const dxfObj = DXFParser.parseDXF(dxf);
-            console.log(dxfObj);
+            // console.log(dxfObj);
             res.send(dxfObj);
 
         } catch(err) {
