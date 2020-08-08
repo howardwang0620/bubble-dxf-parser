@@ -94,10 +94,17 @@ function parseDXF(dxf, unit) {
         //convert color to hex then get name of color
         var hex = "#" + parseInt(color).toString(16).toUpperCase().padStart(6, '0');
         var name = namer(hex).html[0].name;
-        name = name.charAt(0).toUpperCase() + name.slice(1); 
+        name = name.charAt(0).toUpperCase() + name.slice(1);    
 
         //string to output
-        modifiedLayers.push(`Color: ${name} | Length: ${length} | Area: ${area}`);
+        // modifiedLayers.push(`Color: ${name} | Length: ${length} | Area: ${area}`);
+
+        //object payload for layers
+        modifiedLayers.push({
+            name: name,
+            length: length,
+            area: area,
+        });
     }
 
     // console.log(res);
