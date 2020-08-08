@@ -97,7 +97,7 @@ function parseDXF(dxf, unit) {
         name = name.charAt(0).toUpperCase() + name.slice(1); 
 
         //string to output
-        modifiedLayers.push(`Color: ${name}, Length: ${length}, Area: ${area}`);
+        modifiedLayers.push(`Color: ${name} | Length: ${length} | Area: ${area}`);
     }
 
     // console.log(res);
