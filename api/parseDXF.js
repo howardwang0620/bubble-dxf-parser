@@ -2,6 +2,7 @@ const EntityCalculation = require('./EntityCalculation/Utilities.js');
 const THREEdxf = require('./DXFImageConversion/three-dxf-node.js');
 const namer = require('color-namer');
 
+const DEFAULT_COLOR = "Black";
 //Parses a DXF function taking a dxf object (read using module 'dxf-parser') and
 //a unit variable that specifies the extent measurement (eg. cm, in, ft)
 function parseDXF(dxf, unit) {
@@ -28,8 +29,8 @@ function parseDXF(dxf, unit) {
     for (const layerNum in dxf.tables.layer.layers) {
         var layer = dxf.tables.layer.layers[layerNum];
 
-        //init to black if no color
-        const color = layer.color ? layer.color : 16777215;
+        //init to default color (black) if no color
+        const color = layer.color ? getColor(layer.color) : DEFAULT_COLOR;
 
         // layerDictionary[layer.name] = i;
         // res.layers.push([layer.name, color, colorIndex, 0, 0]);
@@ -56,7 +57,21 @@ function parseDXF(dxf, unit) {
 
         //calcs.message occurs when entity calculation is not supported
         if(!calcs.message) {
-            const color = colorDict[entity.layer];
+            var color;
+
+            //entity color may be different than entity's layer color
+            if(entity.color != null) {
+                color = getColor(entity.color);
+
+                //build color in res if doesnt exist
+                if(!res.layers[color]) {
+                    res.layers[color] = {
+                        length: 0,
+                        area: 0,
+                    };
+                }
+            }
+            else color = colorDict[entity.layer];
             //get index of layer within res' layer array
             // var layerIndex = layerDictionary[entity.layer];
             // var layerArray = res.layers[layerIndex];
@@ -73,6 +88,8 @@ function parseDXF(dxf, unit) {
 //          //apply layer specific area and length calculations
             res.layers[color].length += calcs.length;
             res.layers[color].area += calcs.area;
+
+            console.log(`${color} ${entity.type} is length: ${roundTo3Dec(calcs.length)} , area: ${roundTo3Dec(calcs.area)}`);
 
         } else {
 
@@ -91,36 +108,28 @@ function parseDXF(dxf, unit) {
 
         if(length == 0 && area == 0) continue;
 
-        //convert color to hex then get name of color
-        var hex = "#" + parseInt(color).toString(16).toUpperCase().padStart(6, '0');
-        var name = namer(hex).html[0].name;
-        name = name.charAt(0).toUpperCase() + name.slice(1);    
-
-        //string to output
-        // modifiedLayers.push(`Color: ${name} | Length: ${length} | Area: ${area}`);
-
         //object payload for layers
         modifiedLayers.push({
-            name: name,
+            name: color,
             length: length,
             area: area,
         });
     }
 
-    // console.log(res);
     //reformat total length + length and areas of layer array
     res.layers = modifiedLayers;
     res.totLength = roundTo3Dec(res.totLength);
-    // for(var i = 0; i < res.layers.length; i++) {
-    //     var layerArray = res.layers[i];
-    //     layerArray[3] = roundTo3Dec(layerArray[3]);
-    //     layerArray[4] = roundTo3Dec(layerArray[4]);
-    // }   
-
     // console.log(res);
 
     //return resulting dxf object
     return res;
+}
+
+//convert color to hex then get name of color
+function getColor(col) {
+    var hex = "#" + parseInt(col).toString(16).toUpperCase().padStart(6, '0');
+    var name = namer(hex).html[0].name;
+    return name.charAt(0).toUpperCase() + name.slice(1);
 }
 
 function roundTo3Dec(num) {
