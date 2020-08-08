@@ -1,5 +1,5 @@
-// var BSpline = require('./BSplineUtilities/bspline.js');
 var bspline = require('b-spline');
+
 /*
 	Area and length calculations depending on entity
 */

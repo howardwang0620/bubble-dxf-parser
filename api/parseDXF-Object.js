@@ -29,11 +29,6 @@ function parseDXF(dxf, unit) {
         const color = layer.color ? layer.color : null;
         const colorIndex = layer.colorIndex ? layer.colorIndex : null;
 
-        // layerDictionary[layer.name] = i;
-        // res.layers.push([layer.name, color, colorIndex, 0, 0]);
-        // i++;
-
-
         //below code is for objectfying layers in return object
         //bubbleio doesnt handle well so were building array and storing
         //layer indices within layerDictionary
