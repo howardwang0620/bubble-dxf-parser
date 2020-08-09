@@ -39,7 +39,7 @@ app.post('/remoteurl', (req, res) => {
     };
 
     const url = req.body.url;
-    if(url && validUrl.isUri(url)) {
+    if(url && validUrl.isHttpsUri(url)) {
         ReadRemoteURL.getBodyURL(url).then(function(ret) {
             console.log("Received file, building DXF obj...");
             const unit = (!req.body.unit || req.body.unit == "") ? "" : req.body.unit;
