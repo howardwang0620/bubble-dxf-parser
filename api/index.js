@@ -15,7 +15,6 @@ var bspline = require('b-spline');
 
 var app = express();
 app.use(express.static(path.join(path.resolve('./'), 'public')));
-// app.use(express.static('../public'));
 app.use(cors());
 app.use(bodyParser.urlencoded({
     extended: true
@@ -99,6 +98,7 @@ app.post('/remoteurl', (req, res) => {
 */
 app.post('/upload', (req, res) => {
 
+    console.log(req.body);
 	//parse data incoming from form file -> may need to switch to get file
 	var form = new formidable.IncomingForm();
     form.parse(req);
