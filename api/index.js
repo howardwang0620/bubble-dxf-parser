@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var formidable = require('formidable');
+var validUrl = require('valid-url');
 var helmet = require('helmet');
 var fs = require('fs');
 var path = require('path');
@@ -38,7 +39,7 @@ app.post('/remoteurl', (req, res) => {
     };
 
     const url = req.body.url;
-    if(url && url != "") {
+    if(url && validUrl.isUri(url)) {
         ReadRemoteURL.getBodyURL(url).then(function(ret) {
             console.log("Received file, building DXF obj...");
             const unit = (!req.body.unit || req.body.unit == "") ? "" : req.body.unit;
@@ -74,7 +75,7 @@ app.post('/remoteurl', (req, res) => {
             length: 0,
             area: 0
         });
-        obj.message = "No file supplied";
+        obj.message = "File/URL Invalid";
 
         res.status(404).json(obj);
     }

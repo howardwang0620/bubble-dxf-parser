@@ -37,6 +37,7 @@
     "three-dxf": "^0.3.1",
     "three-png-stream": "^1.0.3",
     "three-projector-renderer": "^1.0.1",
-    "three-software-renderer": "^1.2.0"
+    "three-software-renderer": "^1.2.0",
+    "valid-url": "^1.0.9"
   }
 }
