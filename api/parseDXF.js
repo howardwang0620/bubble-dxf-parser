@@ -9,11 +9,14 @@ const DEFAULT_COLOR = "Black";
 function parseDXF(dxf, unit, obj) {
 
     console.log("parsing...");
-    //get extents
+
+    // Get extents
+    // var extents = "";
     const xExtent = roundTo3Dec(dxf.header.$EXTMAX.x - dxf.header.$EXTMIN.x);
     const yExtent = roundTo3Dec(dxf.header.$EXTMAX.y - dxf.header.$EXTMIN.y);
+
     if(!unit || unit == "") unit = "";
-    const extents = `${xExtent}${unit} x ${yExtent}${unit}`;
+    obj.extents = `${xExtent}${unit} x ${yExtent}${unit}`;
 
     // layers will initially be an object to merge layers by colors
     var layerDict = {};     // layerDict stores layer -> color mapping
