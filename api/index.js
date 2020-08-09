@@ -50,8 +50,7 @@ app.post('/remoteurl', (req, res) => {
 
                 console.log("Returning DXF Object:", dxfObj);
                 console.log("Sending obj...");
-
-                res.status(200).json(obj);
+                res.json(dxfObj);
             } catch(err) {
 
                 //Somehow an error reading and parsing DXF
@@ -62,9 +61,8 @@ app.post('/remoteurl', (req, res) => {
                     area: 0
                 });
                 obj.message = "Error reading DXF object";
-
-                res.status(422).json(obj);
                 // throw new Error(err.message);
+                res.json(obj);
             }
         });
     } else {
@@ -77,7 +75,7 @@ app.post('/remoteurl', (req, res) => {
         });
         obj.message = "File/URL Invalid";
 
-        res.status(404).json(obj);
+        res.json(obj);
     }
 });
 
