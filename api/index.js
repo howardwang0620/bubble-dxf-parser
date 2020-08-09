@@ -5,12 +5,11 @@ var helmet = require('helmet');
 var fs = require('fs');
 var path = require('path');
 var cors = require('cors');
-var DxfParser = require('dxf-parser');
 
+//Middleware for reading and parsing DXF file
+var DxfParser = require('dxf-parser');
 var ReadRemoteURL = require('./readRemoteURL.js');
 var DXFParser = require('./parseDXF.js');
-var DXFParserObj = require('./parseDXF-Object.js');
-
 var bspline = require('b-spline');
 
 var app = express();
@@ -24,76 +23,65 @@ app.use(bodyParser.json());
 app.use(helmet());
 
 
-//just a test to fetch file from s3  upload
-// app.get('/fetchtest', (req, res) => {
-//     const fileURL = "https://s3.amazonaws.com/appforest_uf/f1595892674477x375947631632813440/sample.dxf";
-//     const apiURL = "https://bubble-dxf-parser.herokuapp.com/remoteurl";
-//     fetch(apiURL, {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({
-//             url: fileURL,
-//         }),
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         console.log(data);
-//         res.json(data);
-//     });
-//     // .catch(error => console.log(error));
-// });
-
-//receives remote url as body and parses DXF file and reutrns DXF object with arrays
+// Receives remote url as body and parses DXF file and returns DXF object
 app.post('/remoteurl', (req, res) => {
-    console.log("*********DXF ARRAY CALL*********");
-	// console.log(req.body.url);
+    console.log("************DXF CALL************");
+
+    // JSON payload
+    var obj = {
+        layers: [],
+        totLength: 0,
+        image: "",
+        extents: "",
+        errors: [],
+        message: "",
+    };
+
     const url = req.body.url;
-    const unit = req.body.unit;
-    ReadRemoteURL.getBodyURL(url).then(function(ret) {
-        console.log("Received file, building DXF obj...");
+    if(url && url != "") {
+        ReadRemoteURL.getBodyURL(url).then(function(ret) {
+            console.log("Received file, building DXF obj...");
+            const unit = (!req.body.unit || req.body.unit == "") ? "" : req.body.unit;
+            var parser = new DxfParser();
+            try {
+                var dxf = parser.parseSync(ret);
+                const dxfObj = DXFParser.parseDXF(dxf, unit, obj);
 
-        var parser = new DxfParser();
-        try {
-            var dxf = parser.parseSync(ret);
-            const dxfObj = DXFParser.parseDXF(dxf, unit);
+                console.log("Returning DXF Object:", dxfObj);
+                console.log("Sending obj...");
 
-            console.log("Returning DXF Object:", dxfObj);
-            console.log("Sending obj...");
-            res.json(dxfObj);
-        } catch(err) {
-            console.log("Error building DXF obj");
-            throw new Error(err.message);
-        }
-    });
-});
+                res.status(200).json(obj);
+            } catch(err) {
 
-//receives remote url as body and parses DXF file and returns DXF object with objects
-app.post('/remoteurl-v2', (req, res) => {
-    console.log("*********DXF OBJECT CALL*********");
-    // console.log(req.body.url);
-    const url = req.body.url;
-    const unit = req.body.unit;
-    ReadRemoteURL.getBodyURL(url).then(function(ret) {
-        console.log("Received file, building DXF obj...");
+                //Somehow an error reading and parsing DXF
+                console.log("Error reading DXF obj");
+                obj.layers.push({
+                    name: "Empty",
+                    length: 0,
+                    area: 0
+                });
+                obj.message = "Error reading DXF object";
 
-        var parser = new DxfParser();
-        try {
-            var dxf = parser.parseSync(ret);
-            const dxfObj = DXFParserObj.parseDXF(dxf, unit);
+                res.status(422).json(obj);
+                // throw new Error(err.message);
+            }
+        });
+    } else {
 
-            console.log("Returning DXF Object:", dxfObj);
-            console.log("Sending obj...");
-            res.json(dxfObj);
-        } catch(err) {
-            console.log("Error building DXF obj");
-            throw new Error("Error with DXF Parse:", err.message);
-        }
-    });
+        // If no file is supplied
+        obj.layers.push({
+            name: "Empty",
+            length: 0,
+            area: 0
+        });
+        obj.message = "No file supplied";
+
+        res.status(404).json(obj);
+    }
 });
 
 /*
+    (TESTING ROUTE)
 	POST method for DXF file upload
 	Return object data will be in following format:
 	{
@@ -116,23 +104,40 @@ app.post('/upload', (req, res) => {
 	var form = new formidable.IncomingForm();
     form.parse(req);
 
-    //get file from form upload
+    var obj = {
+        layers: [],
+        totLength: 0,
+        image: "",
+        extents: "",
+        errors: [],
+        message: "",
+    };
+
+    // Get file from form upload
     form.on('file', async (name, file) => {
         console.log('Uploaded ' + file.name);
 
-        //receive file text to pass into dxf parser
+        // Receive file text to pass into dxf parser
         var fileText = fs.readFileSync(file.path, { encoding: 'utf8' });
         var parser = new DxfParser();
         try {
             var dxf = parser.parseSync(fileText);
 
             //parse dxf object
-            const dxfObj = DXFParser.parseDXF(dxf);
+            const dxfObj = DXFParser.parseDXF(dxf, null, obj);
             // console.log(dxfObj);
-            res.send(dxfObj);
+            res.status(200).send(dxfObj);
 
         } catch(err) {
             console.log(err);
+            obj.layers.push({
+                name: "Empty",
+                length: 0,
+                area: 0
+            });
+            obj.message = "Error reading DXF object";
+
+            res.status(422).json(obj);
             throw new Error("error parsing DXF File:" + err.message);
         }
 

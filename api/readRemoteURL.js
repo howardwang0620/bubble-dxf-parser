@@ -1,7 +1,7 @@
 const request = require('request');
-var DxfParser = require('dxf-parser');
-
 // const url = "https://s3.amazonaws.com/appforest_uf/f1595892674477x375947631632813440/sample.dxf";
+
+// Read url from remote location and sends body
 function getBodyURL(url) {
 	const options = {
 		url: url,

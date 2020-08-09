@@ -76,16 +76,14 @@ function drawDXF(data, width, height) {
 
 	renderer.render(scene, camera);
 
-    //save to png
+    // Save to png
  //    var out = fs.createWriteStream(`./test-out.png`);
 	// var canvasStream = canvas.pngStream();
 	// canvasStream.on("data", function (chunk) { out.write(chunk); });
 	// canvasStream.on("end", function () { console.log("done"); });
 
-    var dataURL = canvas.toDataURL('image/jpeg');
-    // console.log("************DATA URL************\n", dataURL);
-    return dataURL;
-
+    //Don't save, just return Base64 Encoded Image
+    return canvas.toDataURL('image/jpeg');
 }
 
 module.exports = { drawDXF };

@@ -41,9 +41,9 @@ function handleLine(entity) {
 
 }
 
-//DOES NOT HANDLE AREA FOR COMPLEXT POLYGONS
-//calculates length and area of lines
-//area calculations derived from Area of a polygon using Coordinate Geometry
+// DOES NOT HANDLE AREA FOR COMPLEX POLYGONS
+// **Calculates length and area of lines**
+// Area calculations derived from Area of a polygon using Coordinate Geometry
 function handlePolyLine(entity) {
 
 
@@ -82,12 +82,12 @@ function handlePolyLine(entity) {
 	};
 }
 
-/*
-	De Boors Algorithm
-	Implementation in ./BSplineUtilities
-*/
+// Uses b-spline library to get interpolation of points
+// Length and area calculated from integral t=0->1 with t+= 0.0001
 function handleSpline(entity) {
-	// console.log(entity);
+
+	// Tried implementing De Boor's Alg in /BSplineUtilities
+	// didn't work
 	// var bspline = new BSpline(entity.controlPoints, entity.knotValues, entity.degreeOfSplineCurve + 1);
 	// let length = bspline.calcTotalLength();
 
@@ -132,22 +132,22 @@ function handleCircle(entity) {
 }
 
 function handleEllipse(entity) {
-	//calculate dist from maj axis points to center
+	// Calculate dist from maj axis points to center
 	const majAxisX = Math.abs(entity.majorAxisEndPoint.x);
 	const majAxisY = Math.abs(entity.majorAxisEndPoint.y);
 
 	const a = (Math.sqrt(Math.pow(majAxisX, 2) + Math.pow(majAxisY, 2)));
 
-	//calculate dist from min axis points to center
+	// Calculate dist from min axis points to center
 	const minAxisX = entity.majorAxisEndPoint.y * entity.axisRatio;
 	const minAxisY = entity.majorAxisEndPoint.x * entity.axisRatio;
 	const b = (Math.sqrt(Math.pow(minAxisX, 2) + Math.pow(minAxisY, 2)));
 
-	//Ramanujan Approximation for circumference
+	// Ramanujan Approximation for circumference
 	const h = (Math.pow(a - b, 2) / Math.pow(a + b, 2));
 	const circumference = Math.PI * (a + b) * (1 + ((3 * h) / (10 + Math.sqrt(4 - 3 * h))));
 
-	//area calculation
+	// Area calculation
 	const area = a * b * Math.PI;
 
 	return {
