@@ -20,7 +20,7 @@ function parseDXF(dxf, unit, obj) {
 
     // layers will initially be an object to merge layers by colors
     var layerDict = {};     // layerDict stores layer -> color mapping
-    var colorDict = {};     // colorDict stores length and areas for each color
+    var colorDict = {};     // colorDict stores color -> length and area mapping
 
     for (const layerNum in dxf.tables.layer.layers) {
         var layer = dxf.tables.layer.layers[layerNum];
@@ -75,7 +75,7 @@ function parseDXF(dxf, unit, obj) {
         } else {
 
             // Errors array contains entity types that are not supported
-            obj.errors.push(entity.type);
+            obj.errors.push({ entity: entity.type });
             console.log(`not possible for entity type: ${entity.type}\n`);
         }
     }
@@ -97,7 +97,7 @@ function parseDXF(dxf, unit, obj) {
     obj.totLength = roundTo3Dec(obj.totLength);
 
     // Draw dxf into a Base64 Encoded Image string
-    obj.image = THREEdxf.drawDXF(dxf, 400, 400),
+    obj.image = THREEdxf.drawDXF(dxf, 400, 400);
     // console.log(res);
 
     obj.message = "Success!"
