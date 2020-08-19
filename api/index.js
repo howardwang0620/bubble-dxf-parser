@@ -55,7 +55,7 @@ app.post('/remoteurl', (req, res) => {
             var parser = new DxfParser();
             try {
                 var dxf = parser.parseSync(ret);
-                const dxfObj = parseDXF(dxf, obj, unit,'red, blue,yellow');
+                const dxfObj = parseDXF(dxf, obj, unit, included, excluded);
 
                 console.log("Returning DXF Object:", dxfObj);
                 console.log("Sending obj...");
