@@ -60,13 +60,25 @@ function mergeSplinesDFS(entities, pos, list, visited) {
 	visited[pos] = true;
 
 	var cp = entities[pos].controlPoints;
-	let start = cp[0];
-	let end = cp[cp.length - 1];
+	let start = {
+		x: roundTo6Dec(cp[0].x),
+		y: roundTo6Dec(cp[0].y),
+	};
+	let end = {
+		x: roundTo6Dec(cp[cp.length - 1].x),
+		y: roundTo6Dec(cp[cp.length - 1].y),
+	};
 
 	for(var i = 0; i < entities.length; i++) {
 		var currCp = entities[i].controlPoints;
-		var currStart = currCp[0];
-		var currEnd = currCp[currCp.length - 1];
+		var currStart = {
+			x: roundTo6Dec(currCp[0].x),
+			y: roundTo6Dec(currCp[0].y),
+		};
+		var currEnd = {
+			x: roundTo6Dec(currCp[currCp.length - 1].x),
+			y: roundTo6Dec(currCp[currCp.length - 1].y),
+		};
 
 		//don't check visited nodes
 		if(!visited[i]) {	

@@ -1,3 +1,5 @@
+var { roundTo6Dec } = require('../Utilities/utilities.js');
+
 module.exports.mergePolyLines = function mergePolyLines(entities) {
 	var visited = new Array(entities.length).fill(false);
 	var merged = [];
@@ -70,12 +72,25 @@ function mergePolyLinesDFS(entities, pos, list, visited) {
 	visited[pos] = true;
 
 	var vt = entities[pos].vertices;
-	let start = vt[0];
-	let end = vt[vt.length - 1];
+	let start = {
+		x: roundTo6Dec(vt[0].x),
+		y: roundTo6Dec(vt[0].y),
+	};
+	let end = {
+		x: roundTo6Dec(vt[vt.length - 1].x),
+		y: roundTo6Dec(vt[vt.length - 1].y),
+	};
+
 	for(var i = 0; i < entities.length; i++) {
 		var currVt = entities[i].vertices;
-		var currStart = currVt[0];
-		var currEnd = currVt[currVt.length - 1];
+		var currStart = {
+			x: roundTo6Dec(currVt[0].x),
+			y: roundTo6Dec(currVt[0].y),
+		};
+		var currEnd = {
+			x: roundTo6Dec(currVt[currVt.length - 1].x),
+			y: roundTo6Dec(currVt[currVt.length - 1].y),
+		};
 
 		//don't check visited nodes
 		if(!visited[i]) {
