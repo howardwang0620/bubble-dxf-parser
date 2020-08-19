@@ -34,8 +34,8 @@ module.exports.processColorCalculation = function processColorCalculation(colorD
                 unsupportedTypes.add(type);
             }
 
-            console.log(`${color}/${type} with ${entities[type].length} merged:`);
-            console.log(entities[type]);
+            // console.log(`${color}/${type} with ${entities[type].length} merged:`);
+            // console.log(entities[type]);
         }  
 
         // Calculate lengths and areas for each type within respective color
