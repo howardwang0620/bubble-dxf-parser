@@ -2,7 +2,7 @@ const request = require('request');
 // const url = "https://s3.amazonaws.com/appforest_uf/f1595892674477x375947631632813440/sample.dxf";
 
 // Read url from remote location and sends body
-function getBodyURL(url) {
+module.exports.getBodyURL = function getBodyURL(url) {
 	const options = {
 		url: url,
 		method: 'GET'
@@ -20,6 +20,4 @@ function getBodyURL(url) {
 			}
 		});
     });
-}
-
-module.exports = { getBodyURL }
+};

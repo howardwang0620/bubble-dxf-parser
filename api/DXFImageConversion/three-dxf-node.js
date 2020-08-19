@@ -1,8 +1,6 @@
 var THREE = require('three');
 require('three-canvas-renderer');
-const fs = require("fs");
 const { createCanvas, loadImage } = require('canvas');
-const DxfParser = require('dxf-parser');
 
 const Shapes = require('./shapes.js');
 

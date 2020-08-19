@@ -1,100 +1,81 @@
 var bspline = require('b-spline');
 
-/*
-	Area and length calculations depending on entity
-*/
-function handleEntityCalculation(entity) {
-	// console.log(entity);
-	switch(entity.type) {
-		case 'LINE':
-			return handleLine(entity);
-		case 'POLYLINE':
-		case 'LWPOLYLINE':
-			return handlePolyLine(entity);
-		case 'SPLINE':
-			return handleSpline(entity);
-		case 'CIRCLE': 
-			return handleCircle(entity);
-		case 'ELLIPSE':
-			return handleEllipse(entity);
-		case 'ARC':
-			return handleArc(entity);
-		default: return {
-			message: `Entity ${entity.type} not found`,
-		};
-	}
-}
-
-function handleLine(entity) {
+module.exports.lineCalculation = function lineCalculation(entity) {
 	const x1 = entity.vertices[0].x;
 	const y1 = entity.vertices[0].y;
 
 	const x2 = entity.vertices[1].x;
 	const y2 = entity.vertices[1].y;
 
-	let length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y2, 2));
+	var length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+	var area = Math.abs(x1 * y2) - Math.abs(x2 * y1);
 
 	return {
 		length: length,
-		area: 0,
+		area: area
 	};
-
-}
+};
 
 // DOES NOT HANDLE AREA FOR COMPLEX POLYGONS
-// **Calculates length and area of lines**
+// **Calculates length and area of polylines**
 // Area calculations derived from Area of a polygon using Coordinate Geometry
-function handlePolyLine(entity) {
-
-
-	//determine if polygon is closed, thus has area
-	let closed = entity.shape ||
-					(entity.vertices[0].x == entity.vertices[entity.vertices.length - 1].x && 
-					entity.vertices[0].y == entity.vertices[entity.vertices.length - 1].y);
-	let length = 0;
-	let area = 0;
+module.exports.polyLineCalculation = function polyLineCalculation(entity) {
 
 	//handle length and area calculations
-	for(var i = 0; i < entity.vertices.length; i++) {
+	var length = 0;
+	var area = 0;
+	var vt = entity.vertices;
+	for(var i = 0; i < vt.length - 1; i++) {
 
-		const x1 = entity.vertices[i].x;
-		const y1 = entity.vertices[i].y;
+		const x1 = vt[i].x;
+		const y1 = vt[i].y;
 
-		const nextPoint = (i == entity.vertices.length - 1) ? 0 : i + 1;
-
-		const x2 = entity.vertices[nextPoint].x;
-		const y2 = entity.vertices[nextPoint].y;	
+		const x2 = vt[i + 1].x;
+		const y2 = vt[i + 1].y;	
 
 		//calculating length of polygon
 		length += Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 
 		//handle area
-		if(closed) area += Math.abs(x1 * y2) - Math.abs(x2 * y1);
+		area += Math.abs(x1 * y2) - Math.abs(x2 * y1);
 	}
 
-	//handle last area calculation /2
-	if(closed) area = Math.abs(area) / 2;
 
-	//return object
+	//make last calculation if first point and last points don't match
+	//get length and area distance from last to first point
+	if(entity.shape) {
+		const x1 = vt[vt.length - 1].x;
+		const y1 = vt[vt.length - 1].y;
+
+		const x2 = vt[0].x;
+		const y2 = vt[0].y;
+
+		length += Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+		area += Math.abs(x1 * y2) - Math.abs(x2 * y1);
+	}
+
+	// //return object
 	return {
 		length: length,
 		area: area,
 	};
-}
+};
 
 // Uses b-spline library to get interpolation of points
 // Length and area calculated from integral t=0->1 with t+= 0.0001
-function handleSpline(entity) {
+module.exports.splineCalculation = function splineCalculation(entity) {
 
 	// Tried implementing De Boor's Alg in /BSplineUtilities
 	// didn't work
 	// var bspline = new BSpline(entity.controlPoints, entity.knotValues, entity.degreeOfSplineCurve + 1);
 	// let length = bspline.calcTotalLength();
 
+
 	const degree = entity.degreeOfSplineCurve;
     const knots = entity.knotValues;
 
     const cp = entity.controlPoints;
+    // console.log(cp);
     var points = Object.keys(cp).map((key) => [cp[key].x, cp[key].y]);
 
     var length = 0;
@@ -111,27 +92,26 @@ function handleSpline(entity) {
 	    	const y2 = point[1];
 
 	    	length += Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-	    	if(entity.closed) area += Math.abs(x1 * y2) - Math.abs(x2 * y1);
+	    	
+	    	area += Math.abs(x1 * y2) - Math.abs(x2 * y1);
     	}
-
     	lastPoint = point;
     }
-    if(entity.closed) area = Math.abs(area) / 2;
 
 	return {
 		length: length,
 		area: area,
 	};
-}
+};
 
-function handleCircle(entity) {
+module.exports.circleCalculation = function circleCalculation(entity) {
 	return {
 		length: entity.radius * 2 * Math.PI,
 		area: Math.pow(entity.radius, 2) * Math.PI,
 	};
-}
+};
 
-function handleEllipse(entity) {
+module.exports.ellipseCalculation = function ellipseCalculation(entity) {
 	// Calculate dist from maj axis points to center
 	const majAxisX = Math.abs(entity.majorAxisEndPoint.x);
 	const majAxisY = Math.abs(entity.majorAxisEndPoint.y);
@@ -154,13 +134,11 @@ function handleEllipse(entity) {
 		length: circumference,
 		area: area,
 	};
-}
+};
 
-function handleArc(entity) {
+module.exports.arcCalculation = function arcCalculation(entity) {
 	return {
 		length: entity.radius * entity.angleLength,
 		area: 0
 	};
-}
-
-module.exports = { handleEntityCalculation };
+};

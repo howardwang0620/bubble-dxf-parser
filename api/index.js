@@ -9,9 +9,8 @@ var cors = require('cors');
 
 //Middleware for reading and parsing DXF file
 var DxfParser = require('dxf-parser');
-var ReadRemoteURL = require('./readRemoteURL.js');
-var DXFParser = require('./parseDXF.js');
-var bspline = require('b-spline');
+var { getBodyURL } = require('./readRemoteURL.js');
+var { parseDXF } = require('./DXFProcessor/parseDXF.js');
 
 var app = express();
 app.use(express.static(path.join(path.resolve('./'), 'public')));
@@ -29,23 +28,30 @@ app.post('/remoteurl', (req, res) => {
 
     // JSON payload
     var obj = {
-        layers: [],
-        totLength: 0,
+        includedColors: {
+            totalLength: 0,
+            colors: [],
+        },
+        excludedColors: {
+            totalLength: 0,
+            colors: [],
+        },
         image: "",
         extents: "",
-        errors: [],
+        unSupportedTypes: [],
+        missingColors: [],
         message: "",
     };
 
     const url = req.body.url;
     if(url && validUrl.isHttpsUri(url)) {
-        ReadRemoteURL.getBodyURL(url).then(function(ret) {
+        getBodyURL(url).then(function(ret) {
             console.log("Received file, building DXF obj...");
             const unit = (!req.body.unit || req.body.unit == "") ? "" : req.body.unit;
             var parser = new DxfParser();
             try {
                 var dxf = parser.parseSync(ret);
-                const dxfObj = DXFParser.parseDXF(dxf, unit, obj);
+                const dxfObj = parseDXF(dxf, obj, unit,'red, blue,yellow');
 
                 console.log("Returning DXF Object:", dxfObj);
                 console.log("Sending obj...");
@@ -54,7 +60,12 @@ app.post('/remoteurl', (req, res) => {
 
                 //Somehow an error reading and parsing DXF
                 console.log("Error reading DXF obj");
-                obj.layers.push({
+                obj.includedColors.colors.push({
+                    name: "Empty",
+                    length: 0,
+                    area: 0
+                });
+                obj.excludedColors.colors.push({
                     name: "Empty",
                     length: 0,
                     area: 0
@@ -67,7 +78,12 @@ app.post('/remoteurl', (req, res) => {
     } else {
 
         // If no file is supplied
-        obj.layers.push({
+        obj.includedColors.colors.push({
+            name: "Empty",
+            length: 0,
+            area: 0
+        });
+        obj.excludedColors.colors.push({
             name: "Empty",
             length: 0,
             area: 0
@@ -83,7 +99,7 @@ app.post('/remoteurl', (req, res) => {
 	POST method for DXF file upload
 	Return object data will be in following format:
 	{
-		layers: {
+		color: {
 			ex_layer_1: {
 				color: numerical value of color,
 				colorIndex: numerical vlue of color index,
@@ -104,11 +120,18 @@ app.post('/upload', (req, res) => {
     form.parse(req);
 
     var obj = {
-        layers: [],
-        totLength: 0,
+        includedColors: {
+            totalLength: 0,
+            colors: [],
+        },
+        excludedColors: {
+            totalLength: 0,
+            colors: [],
+        },
         image: "",
         extents: "",
-        errors: [],
+        unSupportedTypes: [],
+        missingColors: [],
         message: "",
     };
 
@@ -123,13 +146,18 @@ app.post('/upload', (req, res) => {
             var dxf = parser.parseSync(fileText);
 
             //parse dxf object
-            const dxfObj = DXFParser.parseDXF(dxf, null, obj);
-            // console.log(dxfObj);
+            const dxfObj = parseDXF(dxf, obj, null);
+            // console.log("PARSED DXF:", dxfObj);
             res.status(200).send(dxfObj);
 
         } catch(err) {
             console.log(err);
-            obj.layers.push({
+            obj.includedColors.colors.push({
+                name: "Empty",
+                length: 0,
+                area: 0
+            });
+            obj.excludedColors.colors.push({
                 name: "Empty",
                 length: 0,
                 area: 0
