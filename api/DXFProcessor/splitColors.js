@@ -5,13 +5,13 @@ module.exports.splitColorDict = function splitColorDict(colors, included, exclud
     // NEED TO THINK ABOUT INPUT AS NUMBERS
     if(included && included != "")
     	// included = new Set(included.split(",").map(e => e.trim().toUpperCase()));
-    	included = included.split(",").map(e => e.trim().getColor());
+    	included = included.split(",").map(e => getColor(e.trim()));
     else
     	included = new Set();
 
     if(excluded && excluded != "")
     	// excluded = new Set(excluded.split(",").map(e => e.trim().toUpperCase()));
-    	excluded = excluded.split(",").map(e => e.trim().getColor());
+    	excluded = excluded.split(",").map(e => getColor(e.trim()));
     else
     	excluded = new Set();
 
