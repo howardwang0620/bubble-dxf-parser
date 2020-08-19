@@ -63,7 +63,7 @@ app.post('/remoteurl', (req, res) => {
             } catch(err) {
 
                 //Somehow an error reading and parsing DXF
-                console.log("Error reading DXF obj");
+                console.log("Error reading DXF obj:", err.message);
                 obj.includedColors.colors.push({
                     name: "Empty",
                     length: 0,
