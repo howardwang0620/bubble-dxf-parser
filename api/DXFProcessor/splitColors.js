@@ -5,13 +5,21 @@ module.exports.splitColorDict = function splitColorDict(colors, included, exclud
     // NEED TO THINK ABOUT INPUT AS NUMBERS
     if(included && included != "")
     	// included = new Set(included.split(",").map(e => e.trim().toUpperCase()));
-    	included = new Set(included.split(",").map(e => getColor(e.trim())));
+    	// included = new Set(included.split(",").map(e => getColor(e.trim())));
+    	included = new Set(included.split(",").map(e => {
+    		if(!isNaN(e)) return getColor(e.trim());
+    		else return e.trim().toUpperCase();
+    	}));
     else
     	included = new Set();
 
     if(excluded && excluded != "")
     	// excluded = new Set(excluded.split(",").map(e => e.trim().toUpperCase()));
-    	excluded = new Set(excluded.split(",").map(e => getColor(e.trim())));
+    	// excluded = new Set(excluded.split(",").map(e => getColor(e.trim())));
+    	excluded = new Set(excluded.split(",").map(e => {
+    		if(!isNaN(e)) return getColor(e.trim());
+    		else return e.trim().toUpperCase();
+    	}));
     else
     	excluded = new Set();
 
@@ -67,7 +75,7 @@ module.exports.splitColorDict = function splitColorDict(colors, included, exclud
     usedColors.forEach(function(e) {
     	included.delete(e);
     });
-    
+
     var missingColors = Array.from(included);
 
     // fill in empty payload for included and excluded colors
