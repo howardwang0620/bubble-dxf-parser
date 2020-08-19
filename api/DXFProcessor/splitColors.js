@@ -3,13 +3,13 @@ var { getColor } = require('../Utilities/utilities.js');
 module.exports.splitColorDict = function splitColorDict(colors, included, excluded) {
 	// convert included string to array
     // NEED TO THINK ABOUT INPUT AS NUMBERS
-    if(included)
+    if(included && included != "")
     	// included = new Set(included.split(",").map(e => e.trim().toUpperCase()));
     	included = included.split(",").map(e => e.trim().getColor());
     else
     	included = new Set();
 
-    if(excluded)
+    if(excluded && excluded != "")
     	// excluded = new Set(excluded.split(",").map(e => e.trim().toUpperCase()));
     	excluded = excluded.split(",").map(e => e.trim().getColor());
     else
