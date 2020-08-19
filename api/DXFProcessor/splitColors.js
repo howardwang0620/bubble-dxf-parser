@@ -1,4 +1,4 @@
-var { getColor } = require('../Utilities/utilities.js');
+var { getColor, roundTo3Dec } = require('../Utilities/utilities.js');
 
 module.exports.splitColorDict = function splitColorDict(colors, included, excluded) {
 	// convert included string to array
@@ -41,6 +41,9 @@ module.exports.splitColorDict = function splitColorDict(colors, included, exclud
 
    	*/
     colors.forEach(function(e) {
+    	e.length = roundTo3Dec(e.length);
+		e.area = roundTo3Dec(e.area);
+
     	if(excluded.size > 0 && excluded.has(e.name)) {
     		excludedColors.push(e);
     		excludedLength += e.length;
@@ -75,11 +78,11 @@ module.exports.splitColorDict = function splitColorDict(colors, included, exclud
     return {
     	includedColors: {
     		colors: includedColors,
-    		totalLength: includedLength,
+    		totalLength: roundTo3Dec(includedLength),
     	},
     	excludedColors: {
     		colors: excludedColors,
-    		totalLength: excludedLength,
+    		totalLength: roundTo3Dec(excludedLength),
     	},
     	missingColors: missingColors,
     };
