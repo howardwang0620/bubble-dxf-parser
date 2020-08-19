@@ -15,6 +15,8 @@ module.exports.splitColorDict = function splitColorDict(colors, included, exclud
     else
     	excluded = new Set();
 
+
+    console.log("INCLUDED COLORS:", included);
     var includedColors = [];
    	var includedLength = 0;
 
