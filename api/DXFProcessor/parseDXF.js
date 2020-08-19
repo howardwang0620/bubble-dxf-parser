@@ -35,10 +35,13 @@ module.exports.parseDXF = function parseDXF(dxf, obj, unit, includedColors, excl
     obj.includedColors = splitColors.includedColors;
     obj.excludedColors = splitColors.excludedColors;
 
-    obj.missingColors = splitColors.missingColors;
+    if(splitColors.missingColors.length > 0)
+        obj.missingColors = splitColors.missingColors.join(", ");
+
+    if(unsupportedTypes.size > 0)
+        obj.unSupportedTypes = Array.from(unsupportedTypes).join(", ");
 
     obj.image = THREEdxf.drawDXF(dxf, 400, 400);
-    obj.unSupportedTypes = Array.from(unsupportedTypes);
     obj.message = "Success!";
 
     return obj;

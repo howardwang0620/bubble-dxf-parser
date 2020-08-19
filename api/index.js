@@ -38,8 +38,8 @@ app.post('/remoteurl', (req, res) => {
         },
         image: "",
         extents: "",
-        unSupportedTypes: ["none"],
-        missingColors: ["none"],
+        unSupportedTypes: "none",
+        missingColors: "none",
         message: "",
     };
 
