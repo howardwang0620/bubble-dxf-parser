@@ -49,8 +49,8 @@ app.post('/remoteurl', (req, res) => {
             console.log("Received file, building DXF obj...");
 
             const unit = (!req.body.unit || req.body.unit.trim() == "") ? "" : req.body.unit;
-            const included = (!req.body.included || req.body.included.trim() == "") ? "" : req.body.included;
-            const excluded = (!req.body.excluded || req.body.excluded.trim() == "") ? "" : req.body.excluded;
+            const included = (!req.body.included || req.body.included == 'null' || req.body.included.trim() == "") ? "" : req.body.included;
+            const excluded = (!req.body.excluded || req.body.excluded == 'null' || req.body.excluded.trim() == "") ? "" : req.body.excluded;
 
             console.log(`BODY:\n    UNITS: '${unit}', INC: '${included}', EXC: '${excluded}'`);
 
