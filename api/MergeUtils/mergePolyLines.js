@@ -55,8 +55,8 @@ function checkDisjointClosed(entities) {
 	var set = new Set();
 	for(var entity of entities) {
 		var vt = entity.vertices;
-		set.add(vt[0].x + " " + vt[0].y);
-		set.add(vt[vt.length - 1].x + " " + vt[vt.length - 1].y);
+		set.add(roundTo6Dec(vt[0].x) + " " + roundTo6Dec(vt[0].y));
+		set.add(roundTo6Dec(vt[vt.length - 1].x) + " " + roundTo6Dec(vt[vt.length - 1].y));
 	}
 
 	// console.log("SET SIZE:", set.size);

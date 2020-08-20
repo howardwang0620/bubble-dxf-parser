@@ -48,14 +48,17 @@ app.post('/remoteurl', (req, res) => {
         getBodyURL(url).then(function(ret) {
             console.log("Received file, building DXF obj...");
 
-            const unit = (!req.body.unit || req.body.unit.trim() == "") ? "" : req.body.unit;
-            const included = (!req.body.included || req.body.included == 'null' || req.body.included.trim() == "") ? null : req.body.included;
+            var { dxf, unit, included} = req.body;
+
+            unit = (!unit || unit.trim() == "") ? "" : unit;
+            included = (!included || included == 'null' || included.trim() == "") ? null : included;
 
             console.log(`BODY:\n    UNITS: '${unit}', INC: '${included}'`);
 
             var parser = new DxfParser();
             try {
-                var dxf = parser.parseSync(ret);
+
+                dxf = parser.parseSync(ret);
                 const dxfObj = parseDXF(dxf, obj, unit, included);
 
                 // console.log("Returning DXF Object:", dxfObj);
