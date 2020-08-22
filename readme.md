@@ -84,17 +84,17 @@ Go ahead and initialize the call by pressing "Initialize call" at the bottom and
 ![image](./readmeimages/api-return-data.png)
 
 ## Using API call in Bubble
-* #### Example external API call for extents on Text Box:
+* ### Example external API call for extents on Text Box:
 To grab data from the API, simply insert dynamic data -> Get data from an external API -> choose 'DXF - DXF API' as the API provider -> fill in the parameters -> use extents. It should look like this:
 ![image](./readmeimages/api-text-example.png)
 
-* #### Example external API call on Repeating Group:
+* ### Example external API call on Repeating Group:
 We'll use the same approach as the text box example. Set the Data Source first by: Get data from an external API -> choose 'DXF - DXF API' as the API provider -> fill in the parameters -> use colors.We then choose the Type of Content, either 'DXF API includedColors color' or 'DXF API excludedColors color' depending on what you need. It should look like this:
 ![image](./readmeimages/api-rg-example.png)
  .   
 includedColors color will be a list of color calculations with fields name, length, and area data. You can display these in your Repeating Group with 3 text boxes representing each field like so:
 ![image](./readmeimages/api-rg-cell-example.png)
 
-* #### Example external API call for Button/Workflow:
+* ### Example external API call for Button/Workflow:
 First add a workflow for the button press. We can display the API data using Element Actions: Group -> Display data or Repeating Group -> Display Data. It works the same as above, Data to Display will be: Get data from an external API -> choose 'DXF - DXF API' as the API provider -> fill in the parameters. It should look like this:
 ![image](./readmeimages/api-workflow-example.png)
