@@ -73,7 +73,7 @@ We now need to fill in the parameters being sent to the API call so head towards
     "included": "<included>"
 }
 ```
-These parameters are defined in a JSON format where each line is a key/value pair (key is on the left of the colon and value is on the right). For example, the "url" key points to a value of "https:<url>". Make sure to enclose keys and values with quotes to follow the JSON schema.  
+These parameters are defined in a JSON format where each line is a key/value pair (key is on the left of the colon and value is on the right). For example, the "url" key points to a value of "https:\<url\>". Make sure to enclose keys and values with quotes to follow the JSON schema.  
 
 Each of these values are enclosed in "<>" which means the value is dynamic, so we can set the value to whatever we want in the Bubble app (use a Bubble element value to fill the value). The "url" key looks different since Bubble uploads files and returns the file location as "//s3.amazonaws.com/filestuff.dxf". The "https:" placed at the front just makes it a valid url.
 
