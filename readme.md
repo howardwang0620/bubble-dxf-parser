@@ -96,5 +96,5 @@ includedColors color will be a list of color calculations with fields name, leng
 ![image](./readmeimages/api-rg-cell-example.png)
 
 * ### Example external API call for Button/Workflow:
-First add a workflow for the button press. We can display the API data using Element Actions -> Group/Display-data or Repeating-Group/Display-list. It works the same as above, Data to Display will be: Get data from an external API -> choose 'DXF - DXF API' as the API provider -> fill in the parameters. It should look like this:
+First add a workflow for the button press. We can display the API data using Element Actions -> Group/Display data or Repeating Group/Display list. It works the same as above, Data to Display will be: Get data from an external API -> choose 'DXF - DXF API' as the API provider -> fill in the parameters. It should look like this:
 ![image](./readmeimages/api-workflow-example.png)
