@@ -5,7 +5,7 @@ The DXF API is a function that receives 3 parameters:
 * Unit value (in, cm, mm, etc.)
 * Included Colors (color code and names both work)
 
-Here is a preview of what the output looks like:
+Here is a preview of what an example output looks like:
 
 ```
 {
