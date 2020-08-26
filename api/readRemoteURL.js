@@ -1,5 +1,4 @@
 const request = require('request');
-// const url = "https://s3.amazonaws.com/appforest_uf/f1595892674477x375947631632813440/sample.dxf";
 
 // Read url from remote location and sends body
 module.exports.getBodyURL = function getBodyURL(url) {
@@ -8,9 +7,9 @@ module.exports.getBodyURL = function getBodyURL(url) {
 		method: 'GET'
 	};
 	console.log("INIT...");
-    return new Promise(function(resolve, reject) {
-    	request.get(options, function(err, resp, body) {
-	    	console.log("Requesting URL...");
+  return new Promise(function(resolve, reject) {
+  	request.get(options, function(err, resp, body) {
+    	console.log("Requesting URL...");
 			if (err) {
 				console.log("Error requesting URL");
 				reject(err);
@@ -19,5 +18,5 @@ module.exports.getBodyURL = function getBodyURL(url) {
 				resolve(body);
 			}
 		});
-    });
+  });
 };
