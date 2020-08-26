@@ -26,7 +26,6 @@ module.exports.polyLineCalculation = function polyLineCalculation(entity) {
 	var area = 0;
 	var vt = entity.vertices;
 	for(var i = 0; i < vt.length - 1; i++) {
-
 		const x1 = vt[i].x;
 		const y1 = vt[i].y;
 
