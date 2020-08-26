@@ -91,7 +91,7 @@ To grab data from the API, simply insert dynamic data -> Get data from an extern
 * ### Example external API call on Repeating Group:
 We'll use the same approach as the text box example. Set the Data Source first by: Get data from an external API -> choose 'DXF - DXF API' as the API provider -> fill in the parameters -> use colors.We then choose the Type of Content, either 'DXF API includedColors color' or 'DXF API excludedColors color' depending on what you need. It should look like this:
 ![image](./readmeimages/api-rg-example.png)
- .   
+
 includedColors color will be a list of color calculations with fields name, length, and area data. You can display these in your Repeating Group with 3 text boxes representing each field like so:
 ![image](./readmeimages/api-rg-cell-example.png)
 
