@@ -74,7 +74,7 @@ function drawDXF(data, width, height) {
 
 	renderer.render(scene, camera);
 
-	//Convert and return Base64 Encoded Image
+	// Convert and return Base64 Encoded Image
 	return canvas.toDataURL('image/jpeg');
 }
 

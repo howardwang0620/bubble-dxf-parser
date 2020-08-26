@@ -8,7 +8,7 @@ module.exports.processDXFByColor = function processDXFByColor(dxf) {
     var layerDict = {};     // layerDict stores layer -> color mapping
     var colorDict = {};     // colorDict stores color -> entities mapping
 
-    //init colors in layers
+    // init colors in layers
     for (const layerNum in dxf.tables.layer.layers) {
         var layer = dxf.tables.layer.layers[layerNum];
 
@@ -22,7 +22,7 @@ module.exports.processDXFByColor = function processDXFByColor(dxf) {
         colorDict[color] = { entities: {} };
     }
 
-    //init entity colors and entity types in color dict
+    // init entity colors and entity types in color dict
     for(const entityNum in dxf.entities) {
         let entity = dxf.entities[entityNum];
         var color;

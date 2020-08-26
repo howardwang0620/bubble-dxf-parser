@@ -4,19 +4,19 @@ module.exports.mergeSplines = function mergeSplines(entities) {
 	var visited = new Array(entities.length).fill(false);
 	var merged = [];
 
-	//iterate through all entities and add to merged
+	// iterate through all entities and add to merged
 	for(var i = 0; i < entities.length; i++) {
 		if(!visited[i]) {
 			var mergedList = [];
 			var closed;
 
-			//if entity is already a shape, set mergedlist to it
+			// if entity is already a shape, set mergedlist to it
 			if(entities[i].closed) {
 				visited[i] = true;
 				mergedList.push(entities[i]);
 				closed = true;
 
-			//else group connected splines together
+			// else group connected splines together
 			} else {
 				mergedList = mergeSplinesDFS(entities, i, [], visited);
 				closed = checkClosed(mergedList);
@@ -74,7 +74,7 @@ function mergeSplinesDFS(entities, pos, list, visited) {
 			y: roundTo6Dec(currCp[currCp.length - 1].y),
 		};
 
-		//don't check visited nodes
+		// don't check visited nodes
 		if(!visited[i]) {
 
 			// x:x -> y:y where x:x is the entity passed, y:y is the entity iterating thru

@@ -15,7 +15,7 @@ var shapes = require('./shapeCalculations.js');
 		}
 
 */
-//send each entity in array to type and add to total length and area calculations
+// send each entity in array to type and add to total length and area calculations
 module.exports.calculate = function calculate(types) {
 	var ret = {
 		length: 0,

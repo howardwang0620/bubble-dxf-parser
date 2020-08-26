@@ -87,7 +87,7 @@ function mergePolyLinesDFS(entities, pos, list, visited) {
 			y: roundTo6Dec(currVt[currVt.length - 1].y),
 		};
 
-		//don't check visited nodes
+		// don't check visited nodes
 		if(!visited[i]) {
 
 			// check where entity's may connect

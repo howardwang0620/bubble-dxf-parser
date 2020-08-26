@@ -5,9 +5,10 @@ var { splitColorDict } = require('./splitColors.js');
 const THREEdxf = require('../DXFImageConversion/three-dxf-node.js');
 var { roundTo3Dec } = require('../Utilities/utilities.js');
 
-// Parses a DXF function taking a dxf object (read using module 'dxf-parser') and
-// a unit variable that specifies the extent measurement (eg. cm, in, ft)
-module.exports.parseDXF = function parseDXF(dxf, obj, unit, includedColors, excludedColors) {
+// Parses a DXF function taking a dxf object (read using module 'dxf-parser')
+// a unit parameter specifying the measurement (eg. cm, in, ft)
+// an includedColors specifying which colors to include (color code or color name)
+module.exports.parseDXF = function parseDXF(dxf, obj, unit, includedColors) {
 
     console.log("parsing...");
 

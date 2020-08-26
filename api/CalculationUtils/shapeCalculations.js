@@ -33,10 +33,10 @@ module.exports.polyLineCalculation = function polyLineCalculation(entity) {
 		const x2 = vt[i + 1].x;
 		const y2 = vt[i + 1].y;
 
-		//calculating length of polygon
+		// calculating length of polygon
 		length += Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 
-		//handle area
+		// handle area
 		area += Math.abs(x1 * y2) - Math.abs(x2 * y1);
 	}
 
@@ -54,7 +54,7 @@ module.exports.polyLineCalculation = function polyLineCalculation(entity) {
 		area += Math.abs(x1 * y2) - Math.abs(x2 * y1);
 	}
 
-	// //return object
+	// return object
 	return {
 		length: length,
 		area: area,

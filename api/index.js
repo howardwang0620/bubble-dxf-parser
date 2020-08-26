@@ -7,7 +7,7 @@ var fs = require('fs');
 var path = require('path');
 var cors = require('cors');
 
-//Middleware for reading and parsing DXF file
+// Middleware for reading and parsing DXF file
 var DxfParser = require('dxf-parser');
 var { getBodyURL } = require('./readRemoteURL.js');
 var { parseDXF } = require('./DXFProcessor/parseDXF.js');
@@ -64,7 +64,7 @@ app.post('/remoteurl', (req, res) => {
                 res.json(dxfObj);
             } catch(err) {
 
-                //Somehow an error reading and parsing DXF
+                // Somehow an error reading and parsing DXF
                 console.log("Error reading DXF obj:", err.message);
                 obj.includedColors.colors.push({
                     name: "Empty",
@@ -109,8 +109,8 @@ app.post('/remoteurl', (req, res) => {
 */
 app.post('/upload', (req, res) => {
 
-    console.log(req.body);
-	//parse data incoming from form file -> may need to switch to get file
+  console.log(req.body);
+	// parse data incoming from form file -> may need to switch to get file
 	var form = new formidable.IncomingForm();
     form.parse(req);
 
@@ -140,7 +140,7 @@ app.post('/upload', (req, res) => {
         try {
             var dxf = parser.parseSync(fileText);
 
-            //parse dxf object
+            // parse dxf object
             const dxfObj = parseDXF(dxf, obj, null);
             // console.log("PARSED DXF:", dxfObj);
             res.status(200).send(dxfObj);
