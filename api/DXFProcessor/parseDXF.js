@@ -10,7 +10,7 @@ var { roundTo3Dec } = require('../Utilities/utilities.js');
 // an includedColors specifying which colors to include (color code or color name)
 module.exports.parseDXF = function parseDXF(dxf, obj, unit, includedColors) {
 
-    console.log("parsing...");
+    console.log("Parsing DXF...");
 
     // Get extents and set extents for obj
     const xExtent = roundTo3Dec(dxf.header.$EXTMAX.x - dxf.header.$EXTMIN.x);
