@@ -29,7 +29,7 @@ module.exports.parseDXF = function parseDXF(dxf, obj, unit, includedColors) {
     var colorCalcs = processColorCalculation(colorDict, unsupportedTypes);
 
     // split colors based on included parameter
-    var splitColors = splitColorDict(colorCalcs.colors, includedColors, excludedColors);
+    var splitColors = splitColorDict(colorCalcs.colors, includedColors);
 
     // set obj fields to included and exluded color objects
     obj.includedColors = splitColors.includedColors;
