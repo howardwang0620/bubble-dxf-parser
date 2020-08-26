@@ -24,7 +24,7 @@ app.use(helmet());
 
 // Receives remote url as body and parses DXF file and returns DXF object
 app.post('/remoteurl', (req, res) => {
-    console.log("************DXF CALL************");
+    console.log("API Call Starting...");
 
     // JSON payload
     var obj = {
@@ -60,7 +60,7 @@ app.post('/remoteurl', (req, res) => {
                 const dxfObj = parseDXF(dxf, obj, unit, included);
 
                 // console.log("Returning DXF Object:", dxfObj);
-                console.log("Sending obj...");
+                console.log("Successfully parsed DXF! Sending obj...");
                 res.json(dxfObj);
             } catch(err) {
 
@@ -77,13 +77,12 @@ app.post('/remoteurl', (req, res) => {
                     area: 0
                 });
                 obj.message = "Error reading DXF object";
-                // throw new Error(err.message);
                 res.json(obj);
             }
         });
     } else {
-
         // If no file is supplied
+        console.log("Error: File/URL Invalid");
         obj.includedColors.colors.push({
             name: "Empty",
             length: 0,
@@ -95,12 +94,8 @@ app.post('/remoteurl', (req, res) => {
             area: 0
         });
         obj.message = "File/URL Invalid";
-
         res.json(obj);
     }
-
-    // output obj message
-    console.log(obj.message);
 });
 
 /*

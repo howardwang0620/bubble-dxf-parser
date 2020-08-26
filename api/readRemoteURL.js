@@ -6,7 +6,7 @@ module.exports.getBodyURL = function getBodyURL(url) {
 		url: url,
 		method: 'GET'
 	};
-	console.log("INIT...");
+	console.log("Grabbing remote dxf file...");
   return new Promise(function(resolve, reject) {
   	request.get(options, function(err, resp, body) {
     	console.log("Requesting URL...");
