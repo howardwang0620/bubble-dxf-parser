@@ -51,11 +51,11 @@ The output has 7 different keys:
 * message
   * Text displaying API status
 
-The includedColors and excludedColors keys are a nested JSON object and have **2** child keys each, **colors** which denotes a list of colors with their name and length/area calculations and **totalLength** which denotes the sum length of entities represented in the colors key.
+The includedColors and excludedColors keys are a nested JSON object and have **2** children keys each, **colors** which denotes a list of colors with their name and length/area calculations and **totalLength** which denotes the sum length of entities represented in the colors key.
 
 ## API Connector
 
-First, you need to install the API Connector plugin in bubble. Go to the Plugins tab -> + Add Plugins -> search for API Connector and install.
+To connect the API to your Bubble application, you will first need to install the API Connector plugin in bubble. Go to the Plugins tab -> + Add Plugins -> search for API Connector and install.
 
 Upon installing you need to initialize an API call so Bubble knows what types of data it's returning. This can be done in the Plugins tab when you click on API Connector. Go ahead and click on 'Add another API'.
 
@@ -104,4 +104,4 @@ The server is currently hosted thru Heroku using free-tier dynos. This means tha
 
 The current iteration deployed by Heroku is connected to the GitHub repository [here](https://github.com/howardwang0620/bubble-dxf-parser). Any code changes pushed to this repo will redeploy the Heroku server.
 
-In the event of reconnecting the Heroku application to another GitHub repository, visit the Heroku deploy settings [here](https://dashboard.heroku.com/apps/bubble-dxf-parser/deploy/github) and scroll down to the section **App connected to GitHub**. Disconnect the repository and then connect the new repository you wish to make future changes to.
+In the event of reconnecting the Heroku application to another GitHub repository, visit the Heroku deploy settings [here](https://dashboard.heroku.com/apps/bubble-dxf-parser/deploy/github) and scroll down to the section **App connected to GitHub**. Disconnect the repository and then connect the new repository you wish to make future changes to.x
