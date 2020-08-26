@@ -98,3 +98,10 @@ includedColors color will be a list of color calculations with fields name, leng
 * ### Example external API call for Button/Workflow:
 First add a workflow for the button press. We can display the API data using Element Actions -> Group/Display data or Repeating Group/Display list. It works the same as above, Data to Display will be: Get data from an external API -> choose 'DXF - DXF API' as the API provider -> fill in the parameters. It should look like this:
 ![image](./readmeimages/api-workflow-example.png)
+
+## Heroku/GitHub
+The server is currently hosted thru Heroku using free-tier dynos. This means that the server shuts down if there is 30 minutes of inactivity (no server calls are made). On the next server call, it will take additional time to produce an output: server wake up time + DXF parsing time. Hobby-tier dynos can always be used to keep the server up 24/7 at a cost of $7/month.
+
+The current iteration deployed by Heroku is connected to the GitHub repository [here](https://github.com/howardwang0620/bubble-dxf-parser). Any code changes pushed to this repo will redeploy the Heroku server.
+
+In the event of reconnecting the Heroku application to another GitHub repository, visit the Heroku deploy settings [here](https://dashboard.heroku.com/apps/bubble-dxf-parser/deploy/github) and scroll down to the section **App connected to GitHub**. Disconnect the repository and then connect the new repository you wish to make future changes to.
