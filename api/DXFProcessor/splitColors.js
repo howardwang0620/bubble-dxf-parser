@@ -17,11 +17,11 @@ module.exports.splitColorDict = function splitColorDict(colors, included) {
     var excludedColors = [];
     var excludedLength = 0;
 
-   	// start splitting colors to included and excluded colors
-   	// if included is not defined, add to included
-   	// if included is defined, add to included if it contains color
-   	// if included is defined and not in included, add to excluded
-   	var usedColors = new Set();
+    // start splitting colors to included and excluded colors
+    // if included is not defined, add to included
+    // if included is defined, add to included if it contains color
+    // if included is defined and not in included, add to excluded
+    var usedColors = new Set();
     colors.forEach(function(e) {
       e.length = roundTo3Dec(e.length);
       e.area = roundTo3Dec(e.area);
