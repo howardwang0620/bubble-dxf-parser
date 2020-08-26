@@ -53,8 +53,6 @@ app.post('/remoteurl', (req, res) => {
             unit = (!unit || unit.trim() == "") ? "" : unit;
             included = (!included || included == 'null' || included.trim() == "") ? null : included;
 
-            console.log(`BODY:\n    UNITS: '${unit}', INC: '${included}'`);
-
             var parser = new DxfParser();
             try {
 
@@ -100,25 +98,14 @@ app.post('/remoteurl', (req, res) => {
 
         res.json(obj);
     }
+
+    // output obj message
+    console.log(obj.message);
 });
 
 /*
-    (TESTING ROUTE)
+  (TESTING ROUTE)
 	POST method for DXF file upload
-	Return object data will be in following format:
-	{
-		color: {
-			ex_layer_1: {
-				color: numerical value of color,
-				colorIndex: numerical vlue of color index,
-				length: sum of all lengths of given layer,
-				area: sum of all areas of given layer,
-			}
-		},
-		totLength: sum of all entity lengths,
-		image: dxf file as an image,
-		extents: [x extent, y extent] 
-	}
 */
 app.post('/upload', (req, res) => {
 
@@ -179,7 +166,7 @@ app.post('/upload', (req, res) => {
     });
 });
 
- 
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, function() {
 	console.log(`Listening on ${PORT}`);
