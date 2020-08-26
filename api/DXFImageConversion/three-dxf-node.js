@@ -45,7 +45,7 @@ function drawDXF(data, width, height) {
     } else {
         vp_height = vp_width / aspectRatio;
     }
-        
+
     const zoom = 0.5;
     var viewPort = {
         bottom: -vp_height / 2 - zoom,
@@ -74,14 +74,8 @@ function drawDXF(data, width, height) {
 
 	renderer.render(scene, camera);
 
-    // Save to png
- //    var out = fs.createWriteStream(`./test-out.png`);
-	// var canvasStream = canvas.pngStream();
-	// canvasStream.on("data", function (chunk) { out.write(chunk); });
-	// canvasStream.on("end", function () { console.log("done"); });
-
-    //Don't save, just return Base64 Encoded Image
-    return canvas.toDataURL('image/jpeg');
+	//Convert and return Base64 Encoded Image
+	return canvas.toDataURL('image/jpeg');
 }
 
 module.exports = { drawDXF };

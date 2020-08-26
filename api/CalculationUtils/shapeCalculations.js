@@ -17,8 +17,8 @@ module.exports.lineCalculation = function lineCalculation(entity) {
 };
 
 // DOES NOT HANDLE AREA FOR COMPLEX POLYGONS
-// **Calculates length and area of polylines**
-// Area calculations derived from Area of a polygon using Coordinate Geometry
+// Calculates length and area of polylines
+// Area calculated using Coordinate Geometry
 module.exports.polyLineCalculation = function polyLineCalculation(entity) {
 
 	//handle length and area calculations
@@ -31,7 +31,7 @@ module.exports.polyLineCalculation = function polyLineCalculation(entity) {
 		const y1 = vt[i].y;
 
 		const x2 = vt[i + 1].x;
-		const y2 = vt[i + 1].y;	
+		const y2 = vt[i + 1].y;
 
 		//calculating length of polygon
 		length += Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
@@ -64,13 +64,6 @@ module.exports.polyLineCalculation = function polyLineCalculation(entity) {
 // Uses b-spline library to get interpolation of points
 // Length and area calculated from integral t=0->1 with t+= 0.0001
 module.exports.splineCalculation = function splineCalculation(entity) {
-
-	// Tried implementing De Boor's Alg in /BSplineUtilities
-	// didn't work
-	// var bspline = new BSpline(entity.controlPoints, entity.knotValues, entity.degreeOfSplineCurve + 1);
-	// let length = bspline.calcTotalLength();
-
-
 	const degree = entity.degreeOfSplineCurve;
     const knots = entity.knotValues;
 
@@ -92,7 +85,7 @@ module.exports.splineCalculation = function splineCalculation(entity) {
 	    	const y2 = point[1];
 
 	    	length += Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-	    	
+
 	    	area += Math.abs(x1 * y2) - Math.abs(x2 * y1);
     	}
     	lastPoint = point;

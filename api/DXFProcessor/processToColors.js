@@ -6,7 +6,7 @@ module.exports.processDXFByColor = function processDXFByColor(dxf) {
 
     // layers will initially be an object to merge layers by colors
     var layerDict = {};     // layerDict stores layer -> color mapping
-    var colorDict = {};       // colorDict stores color -> entities mapping
+    var colorDict = {};     // colorDict stores color -> entities mapping
 
     //init colors in layers
     for (const layerNum in dxf.tables.layer.layers) {
@@ -23,9 +23,6 @@ module.exports.processDXFByColor = function processDXFByColor(dxf) {
     }
 
     //init entity colors and entity types in color dict
-    /*
-
-    */
     for(const entityNum in dxf.entities) {
         let entity = dxf.entities[entityNum];
         var color;
@@ -44,14 +41,14 @@ module.exports.processDXFByColor = function processDXFByColor(dxf) {
             color = layerDict[entity.layer];
         }
 
-        // append type to corrosponding colors in colorDict
+        // append type to corresponding colors in colorDict
         if(!colorDict[color].entities[entity.type]) {
             colorDict[color].entities[entity.type] = [];
         }
         colorDict[color].entities[entity.type].push(entity);
     }
 
-    //remove colors with no entities from included colors
+    // remove colors with no entities from included colors
     for(const color in colorDict) {
         if(Object.keys(colorDict[color].entities).length == 0) delete colorDict[color];
     }

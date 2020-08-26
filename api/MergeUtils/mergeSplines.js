@@ -6,7 +6,6 @@ module.exports.mergeSplines = function mergeSplines(entities) {
 
 	//iterate through all entities and add to merged
 	for(var i = 0; i < entities.length; i++) {
-		// console.log("CP:", entityList[i].controlPoints);
 		if(!visited[i]) {
 			var mergedList = [];
 			var closed;
@@ -30,14 +29,12 @@ module.exports.mergeSplines = function mergeSplines(entities) {
     		});
 		}
 	}
-	
+
     return merged;
 };
-	
-//can check if an entity is closed by adding 
-//all start and end control points to a set
-//it will be closed if set size is equal to entities length
-//meaning all start and end points coincide at least once 
+
+// can check if an entity is closed by adding all start and end control points to a set.
+// it will be closed if set size is equal to entities length meaning all start and end points coincide at least once
 function checkClosed(entities) {
 	var set = new Set();
 	for(var entity of entities) {
@@ -45,9 +42,6 @@ function checkClosed(entities) {
 		set.add(roundTo6Dec(cp[0].x) + " " + roundTo6Dec(cp[0].y));
 		set.add(roundTo6Dec(cp[cp.length - 1].x) + " " + roundTo6Dec(cp[cp.length - 1].y));
 	}
-
-	// console.log("SET SIZE:", set.size);
-	// console.log(set);
 
 	return set.size == entities.length;
 }
@@ -81,7 +75,7 @@ function mergeSplinesDFS(entities, pos, list, visited) {
 		};
 
 		//don't check visited nodes
-		if(!visited[i]) {	
+		if(!visited[i]) {
 
 			// x:x -> y:y where x:x is the entity passed, y:y is the entity iterating thru
 			if(end.x == currStart.x && end.y == currStart.y) {
@@ -103,7 +97,7 @@ function mergeSplinesDFS(entities, pos, list, visited) {
 				// reverse first node
 				list[list.length - 1].controlPoints = list[list.length - 1].controlPoints.reverse();
 				list[list.length - 1].knotValues = reverseKnots(list[list.length - 1].knotValues, list[list.length - 1].degreeOfSplineCurve);
-				
+
 				mergeSplinesDFS(entities, i, list, visited);
 			} else if(start.x == currEnd.x && start.y == currEnd.y) {
 
@@ -114,28 +108,29 @@ function mergeSplinesDFS(entities, pos, list, visited) {
 
 				list[list.length - 1].controlPoints = list[list.length - 1].controlPoints.reverse();
 				list[list.length - 1].knotValues = reverseKnots(list[list.length - 1].knotValues, list[list.length - 1].degreeOfSplineCurve);
-				
+
 				mergeSplinesDFS(entities, i, list, visited);
-			} 
+			}
 		}
 	}
 
 	return list;
 }
 
+// reverse direction of knot values
 function reverseKnots(knots, degree) {
-	var reverseknots = [knots.length];
+	var reversed = [knots.length];
 	var o = degree + 1;
 	const c = knots[0] + knots[knots.length - 1];
 
 	for(var i = 0; i < knots.length; i++) {
 		if(i >= o && i <= knots.length - o - 1) {
 			var s = knots[knots.length - 1 - i];
-			reverseknots[i] = c - s;
+			reversed[i] = c - s;
 		} else {
-			reverseknots[i] = knots[i];
+			reversed[i] = knots[i];
 		}
 	}
 
-	return reverseknots;
+	return reversed;
 }

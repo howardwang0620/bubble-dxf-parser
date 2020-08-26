@@ -1,11 +1,9 @@
 var { getColor, roundTo3Dec } = require('../Utilities/utilities.js');
 
 module.exports.splitColorDict = function splitColorDict(colors, included) {
-	// convert included string to array
+  // convert included string to array
 	// included will either be empty or filled
     if(included)
-    	// included = new Set(included.split(",").map(e => e.trim().toUpperCase()));
-    	// included = new Set(included.split(",").map(e => getColor(e.trim())));
     	included = new Set(included.split(",").map(e => {
     		if(!isNaN(e)) return getColor(e.trim());
     		else return e.trim().toUpperCase();
@@ -20,7 +18,7 @@ module.exports.splitColorDict = function splitColorDict(colors, included) {
    	var excludedLength = 0;
 
    	// start splitting colors to included and excluded colors
-   	// if included is not defined, add to included 
+   	// if included is not defined, add to included
    	// if included is defined, add to included if it contains color
    	// if included is defined and not in included, add to excluded
    	var usedColors = new Set();
@@ -43,10 +41,10 @@ module.exports.splitColorDict = function splitColorDict(colors, included) {
     	}
     });
 
+    // delete used colors from included to find missing colors
     usedColors.forEach(function(e) {
     	included.delete(e);
     });
-
     var missingColors = Array.from(included);
 
     // fill in empty payload for included and excluded colors
@@ -76,8 +74,4 @@ module.exports.splitColorDict = function splitColorDict(colors, included) {
     	},
     	missingColors: missingColors,
     };
-
-
-
-
 };

@@ -1,6 +1,5 @@
 var shapes = require('./shapeCalculations.js');
 
-//input:
 /*
 	input: object of entity types, each an array of objects containing merged entities and closed bool
 
@@ -30,7 +29,6 @@ module.exports.calculate = function calculate(types) {
 
 			// If entity is supported, add together lengths and areas for given type to ret object
 			if(!calcs.message) {
-				// console.log(`TYPE ${i}/${type} length is ${calcs.length}, area is ${calcs.area}`);
 				ret.length += calcs.length;
 				ret.area += calcs.area;
 			}
@@ -73,7 +71,6 @@ function handleLine(entity, calc) {
 
 	var length = 0;
 	for(var i = 0; i < entities.length; i++) {
-		//handle last area calculation /2
 		var calcs = shapes.lineCalculation(entities[i]);
 
 		def.length += calcs.length;
@@ -94,7 +91,6 @@ function handlePolyLine(entity) {
 		area: 0,
 	};
 	for(var i = 0; i < entities.length; i++) {
-		//handle last area calculation /2
 		var calcs = shapes.polyLineCalculation(entities[i]);
 
 		def.length += calcs.length;
@@ -178,18 +174,3 @@ function handleArc(entity) {
 
 	return def;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

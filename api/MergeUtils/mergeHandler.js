@@ -4,17 +4,17 @@ var { mergePolyLines } = require('./mergePolyLines');
 /*
 	Preprocessed--
 	{
-		Red: { 
-			entities: { 
-				SPLINE: [Array] 
+		Red: {
+			entities: {
+				SPLINE: [Array]
 			},
 		}
 	}
 
 	Postprocessed--
 	{
-		Red: { 
-			entities: { 
+		Red: {
+			entities: {
 				SPLINE: [
 					{
 						merged: [],
@@ -24,7 +24,7 @@ var { mergePolyLines } = require('./mergePolyLines');
 						merged: [],
 						closed: false,
 					}
-				] 
+				]
 			},
 		}
 	}
@@ -40,13 +40,10 @@ module.exports.mergeOnType = function mergeOnType(entities, type) {
 		case 'CIRCLE':
 		case 'ELLIPSE':
 			return reformat(entities, true);
-		// case 'ARC':
-		// 	return mergeArc(entities);
 		case 'ARC':
 			return reformat(entities, false);
-		default: 
+		default:
 			return { message: `${type} NOT SUPPORTED YET` };
-			// console.log(`${type} NOT SUPPORTED YET`);
 	}
 };
 

@@ -26,18 +26,17 @@ module.exports.mergePolyLines = function mergePolyLines(entities) {
 
 			// add group of connected entities together and specify if closed
 			merged.push({
-    			merged: mergedList,
-    			closed: closed,
-    		});
+				merged: mergedList,
+				closed: closed,
+			});
 		}
 	}
-	
-    return merged;
+
+	return merged;
 };
 
 
-// checks if a singular entity is closed
-// looks if start and ends are connected
+// check if a singular entity is closed if start and ends are connected
 function checkJointClosed(entity) {
 	var vertices = entity.vertices;
 	var start = vertices[0];
@@ -46,11 +45,9 @@ function checkJointClosed(entity) {
 	return start.x == end.x && start.y == end.y;
 }
 
-	
-// can check if an entity is closed by adding 
-// all start and end control points to a set
-// it will be closed if set size is equal to entities length
-// meaning all start and end points coincide at least once 
+
+// can check if an entity is closed by adding all start and end control points to a set.
+// it will be closed if set size is equal to entities length meaning all start and end points coincide at least once
 function checkDisjointClosed(entities) {
 	var set = new Set();
 	for(var entity of entities) {
@@ -59,14 +56,12 @@ function checkDisjointClosed(entities) {
 		set.add(roundTo6Dec(vt[vt.length - 1].x) + " " + roundTo6Dec(vt[vt.length - 1].y));
 	}
 
-	// console.log("SET SIZE:", set.size);
-	// console.log(set);
-
 	return set.size == entities.length;
 }
 
 // DFS to traverse list by starting and ending nodes of each entity
 // connects 2 entities by looking at end node of one and start node of another
+// goal of merging is to have every node's vertices look like (start:end->start:end->...->start:end)
 function mergePolyLinesDFS(entities, pos, list, visited) {
 	list.push(entities[pos]);
 	visited[pos] = true;
@@ -126,12 +121,3 @@ function mergePolyLinesDFS(entities, pos, list, visited) {
 
 	return list;
 }
-
-
-
-
-
-
-
-
-
