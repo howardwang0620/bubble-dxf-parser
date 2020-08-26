@@ -64,31 +64,31 @@ module.exports.polyLineCalculation = function polyLineCalculation(entity) {
 // Length and area calculated from integral t=0->1 with t+= 0.0001
 module.exports.splineCalculation = function splineCalculation(entity) {
 	const degree = entity.degreeOfSplineCurve;
-    const knots = entity.knotValues;
+	const knots = entity.knotValues;
 
-    const cp = entity.controlPoints;
-    // console.log(cp);
-    var points = Object.keys(cp).map((key) => [cp[key].x, cp[key].y]);
+	const cp = entity.controlPoints;
+	// console.log(cp);
+	var points = Object.keys(cp).map((key) => [cp[key].x, cp[key].y]);
 
-    var length = 0;
-    var area = 0;
-    var lastPoint;
-    for(var t = 0; t < 1; t += 0.0001) {
-    	var point = bspline(t, degree, points, knots);
+	var length = 0;
+	var area = 0;
+	var lastPoint;
+	for(var t = 0; t < 1; t += 0.0001) {
+		var point = bspline(t, degree, points, knots);
 
-    	if(lastPoint) {
-    		const x1 = lastPoint[0];
-	    	const y1 = lastPoint[1];
+		if(lastPoint) {
+			const x1 = lastPoint[0];
+			const y1 = lastPoint[1];
 
-	    	const x2 = point[0];
-	    	const y2 = point[1];
+			const x2 = point[0];
+			const y2 = point[1];
 
-	    	length += Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+			length += Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 
-	    	area += Math.abs(x1 * y2) - Math.abs(x2 * y1);
-    	}
-    	lastPoint = point;
-    }
+			area += Math.abs(x1 * y2) - Math.abs(x2 * y1);
+		}
+		lastPoint = point;
+	}
 
 	return {
 		length: length,

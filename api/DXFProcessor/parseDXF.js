@@ -37,11 +37,11 @@ module.exports.parseDXF = function parseDXF(dxf, obj, unit, includedColors) {
 
     // missingColors toString if necessary
     if(splitColors.missingColors.length > 0)
-        obj.missingColors = splitColors.missingColors.join(", ");
+    obj.missingColors = splitColors.missingColors.join(", ");
 
     // unsupportedTypes toString if necessary
     if(unsupportedTypes.size > 0)
-        obj.unSupportedTypes = Array.from(unsupportedTypes).join(", ");
+    obj.unSupportedTypes = Array.from(unsupportedTypes).join(", ");
 
     // generate Base64 Encoded Image from dxf
     obj.image = THREEdxf.drawDXF(dxf, 400, 400);

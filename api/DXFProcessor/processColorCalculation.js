@@ -9,51 +9,51 @@ module.exports.processColorCalculation = function processColorCalculation(colorD
 	// total length of all entities
 	var totalLength = 0;
 
-	 // iterate by colors in color dict
-    for(const color in colorDict) {
+	// iterate by colors in color dict
+	for(const color in colorDict) {
 
-        // iterate through each type
-        // 2 steps  -> merge entities that are connected
-        //          -> calculate lengths and areas of entities and append calculations to colorCalcs
-        for(const type in colorDict[color].entities) {
+		// iterate through each type
+		// 2 steps  -> merge entities that are connected
+		//          -> calculate lengths and areas of entities and append calculations to colorCalcs
+		for(const type in colorDict[color].entities) {
+			
+			// entities variable contains all entities associated with given type
+			let entities = colorDict[color].entities;
 
-            // entities variable contains all entities associated with given type
-            let entities = colorDict[color].entities;
+			// with the given type, mergeOnType merges all connected entities into an array
+			var merged = mergeOnType(entities[type], type);
 
-            // with the given type, mergeOnType merges all connected entities into an array
-            var merged = mergeOnType(entities[type], type);
+			// if an entity type is not supported, it will be caught here
+			// delete entities[type] so it doesn't mess with next calculation step
+			// add to unsupportedTypes set
+			if(!merged.message) entities[type] = merged;
+			else {
 
-            // if an entity type is not supported, it will be caught here
-            // delete entities[type] so it doesn't mess with next calculation step
-            // add to unsupportedTypes set
-            if(!merged.message) entities[type] = merged;
-            else {
+				// remove unsupported type from entities obj and add to unsupportedTypes set
+				delete entities[type];
+				unsupportedTypes.add(type);
+			}
 
-                // remove unsupported type from entities obj and add to unsupportedTypes set
-                delete entities[type];
-                unsupportedTypes.add(type);
-            }
+			// console.log(`${color}/${type} with ${entities[type].length} merged:`);
+			// console.log(entities[type]);
+		}
 
-            // console.log(`${color}/${type} with ${entities[type].length} merged:`);
-            // console.log(entities[type]);
-        }  
+		// Calculate lengths and areas for each type within respective color
+		var calcs = calculate(colorDict[color].entities);
+		if(!calcs.message) {
 
-        // Calculate lengths and areas for each type within respective color
-        var calcs = calculate(colorDict[color].entities);
-        if(!calcs.message) {
+			// append color name and length + area calculations to colorCalcs
+			colorCalcs.push({
+				name: color,
+				length: calcs.length,
+				area: calcs.area,
+			});
+			totalLength += calcs.length;
+		}
+	}
 
-            // append color name and length + area calculations to colorCalcs
-            colorCalcs.push({
-                name: color,
-                length: calcs.length,
-                area: calcs.area,
-            });
-            totalLength += calcs.length;
-        }
-    }
-
-    return {
-    	colors: colorCalcs,
-    	totalLength: totalLength, 
-    };
+	return {
+		colors: colorCalcs,
+		totalLength: totalLength,
+	};
 };

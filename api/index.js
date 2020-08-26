@@ -99,14 +99,14 @@ app.post('/remoteurl', (req, res) => {
 });
 
 /*
-  (TESTING ROUTE)
-	POST method for DXF file upload
+(TESTING ROUTE)
+POST method for DXF file upload
 */
 app.post('/upload', (req, res) => {
 
-  console.log(req.body);
-	// parse data incoming from form file -> may need to switch to get file
-	var form = new formidable.IncomingForm();
+    console.log(req.body);
+    // parse data incoming from form file -> may need to switch to get file
+    var form = new formidable.IncomingForm();
     form.parse(req);
 
     var obj = {
@@ -164,5 +164,5 @@ app.post('/upload', (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, function() {
-	console.log(`Listening on ${PORT}`);
+    console.log(`Listening on ${PORT}`);
 });

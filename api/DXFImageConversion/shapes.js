@@ -343,7 +343,7 @@ function drawSolid(entity, data) {
     material = new THREE.MeshBasicMaterial({ color: getColor(entity, data) });
 
     return new THREE.Mesh(geometry, material);
-    
+
 }
 
 function drawText(entity, data) {
@@ -351,7 +351,7 @@ function drawText(entity, data) {
 
     // if(!font)
     //     return console.warn('Text is not supported without a Three.js font loaded with THREE.FontLoader! Load a font of your choice and pass this into the constructor. See the sample for this repository or Three.js examples at http://threejs.org/examples/?q=text#webgl_geometry_text for more details.');
-    
+
     geometry = new THREE.TextGeometry(entity.text, { height: 0, size: entity.textHeight || 12 });
 
     if (entity.rotation) {
@@ -416,11 +416,11 @@ function drawDimension(entity, data) {
 
 function drawBlock(entity, data) {
     var block = data.blocks[entity.name];
-    
+
     if (!block.entities) return null;
 
     var group = new THREE.Object3D()
-    
+
     if(entity.xScale) group.scale.x = entity.xScale;
     if(entity.yScale) group.scale.y = entity.yScale;
 
@@ -433,7 +433,7 @@ function drawBlock(entity, data) {
         group.position.y = entity.position.y;
         group.position.z = entity.position.z;
     }
-    
+
     for(var i = 0; i < block.entities.length; i++) {
         var childEntity = drawEntity(block.entities[i], data, group);
         if(childEntity) group.add(childEntity);
@@ -448,7 +448,7 @@ function getColor(entity, data) {
         color = entity.color;
     } else if(data.tables && data.tables.layer && data.tables.layer.layers[entity.layer])
         color = data.tables.layer.layers[entity.layer].color;
-        
+
     if(color == null || color === 0xffffff) {
         color = 0x000000;
     }

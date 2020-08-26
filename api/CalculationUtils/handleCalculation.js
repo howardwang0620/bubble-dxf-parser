@@ -39,8 +39,8 @@ module.exports.calculate = function calculate(types) {
 };
 
 /*
-	Area and length calculations depending on entity
-	Any unsupported entities will have been caught by mergehandler, don't need to worry here
+Area and length calculations depending on entity
+Any unsupported entities will have been caught by mergehandler, don't need to worry here
 */
 function handleCalculation(entity, type) {
 	switch(type) {
