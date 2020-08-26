@@ -104,4 +104,4 @@ The server is currently hosted thru Heroku using free-tier dynos. This means tha
 
 The current iteration deployed by Heroku is connected to the GitHub repository [here](https://github.com/howardwang0620/bubble-dxf-parser). Any code changes pushed to this repo will redeploy the Heroku server.
 
-In the event of reconnecting the Heroku application to another GitHub repository, visit the Heroku deploy settings [here](https://dashboard.heroku.com/apps/bubble-dxf-parser/deploy/github) and scroll down to the section **App connected to GitHub**. Disconnect the repository and then connect the new repository you wish to make future changes to.x
+In the event of reconnecting the Heroku application to another GitHub repository, visit the Heroku deploy settings [here](https://dashboard.heroku.com/apps/bubble-dxf-parser/deploy/github) and scroll down to the section **App connected to GitHub**. Disconnect the repository and then connect the new repository you wish to make future changes to.
