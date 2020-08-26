@@ -1,8 +1,8 @@
 var { getColor, roundTo3Dec } = require('../Utilities/utilities.js');
 
 module.exports.splitColorDict = function splitColorDict(colors, included) {
-  // convert included string to array
-	// included will either be empty or filled
+    // convert included string to array
+    // included will either be empty or filled
     if(included)
     	included = new Set(included.split(",").map(e => {
     		if(!isNaN(e)) return getColor(e.trim());
@@ -24,21 +24,21 @@ module.exports.splitColorDict = function splitColorDict(colors, included) {
    	var usedColors = new Set();
     colors.forEach(function(e) {
     	e.length = roundTo3Dec(e.length);
-		e.area = roundTo3Dec(e.area);
-		if(included.size == 0) {
-    		console.log(`${e.name} INCLUDED`);
-    		includedColors.push(e);
-    		includedLength += e.length;
-    	} else if(included.size > 0 && included.has(e.name)) {
-    		console.log(`${e.name} INCLUDED`);
-    		includedColors.push(e);
-    		includedLength += e.length;
-    		usedColors.add(e.name);
-    	} else {
-    		console.log(`${e.name} EXCLUDED`);
-    		excludedColors.push(e);
-    		excludedLength += e.length;
-    	}
+  		e.area = roundTo3Dec(e.area);
+  		if(included.size == 0) {
+      		console.log(`${e.name} INCLUDED`);
+      		includedColors.push(e);
+      		includedLength += e.length;
+      	} else if(included.size > 0 && included.has(e.name)) {
+      		console.log(`${e.name} INCLUDED`);
+      		includedColors.push(e);
+      		includedLength += e.length;
+      		usedColors.add(e.name);
+      	} else {
+      		console.log(`${e.name} EXCLUDED`);
+      		excludedColors.push(e);
+      		excludedLength += e.length;
+      	}
     });
 
     // delete used colors from included to find missing colors
