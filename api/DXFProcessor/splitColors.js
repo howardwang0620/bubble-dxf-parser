@@ -12,10 +12,10 @@ module.exports.splitColorDict = function splitColorDict(colors, included) {
     	included = new Set();
 
     var includedColors = [];
-   	var includedLength = 0;
+    var includedLength = 0;
 
-   	var excludedColors = [];
-   	var excludedLength = 0;
+    var excludedColors = [];
+    var excludedLength = 0;
 
    	// start splitting colors to included and excluded colors
    	// if included is not defined, add to included
