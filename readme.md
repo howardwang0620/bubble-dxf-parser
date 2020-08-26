@@ -62,7 +62,7 @@ Upon installing you need to initialize an API call so Bubble knows what types of
 We need to first define an API and give it a name, let's call it DXF. Click on 'Add a shared header' to add a header for the type of data being returned, in this case, an application/json type. Your API should look like this now:
 ![image](./readmeimages/init-api.png)
 
-Once we've defined the API, we need to add a call which is essentially a function that will take parameters and return the important data that we need. Let's rename API call to DXF API and expand the box. Our API call is a POST API meaning we send data to the server and create a resource, our return JSON. Set the request type from GET to POST. Our API url resides on 'https://bubble-dxf-parser.herokuapp.com/remoteurl', so fill the box next to it with that. It should look like this now:
+Once we've defined the API, we need to add a call which is essentially a function that will take parameters and return the important data that we need. Let's rename API call to DXF API and expand the box. Our API call is a POST API meaning we send data to the server and create a resource, our return JSON. Set the request type from GET to POST. Our API url resides on https:<span></span>//bubble-dxf-parser.herokuapp.com/remoteurl, so fill the box next to it with that. It should look like this now:
 ![image](./readmeimages/api-url.png)
 
 We now need to fill in the parameters being sent to the API call so head towards the 'Body' box to add our 3 inputs: url, unit, and included.
