@@ -16,7 +16,7 @@ module.exports.processColorCalculation = function processColorCalculation(colorD
 		// 2 steps  -> merge entities that are connected
 		//          -> calculate lengths and areas of entities and append calculations to colorCalcs
 		for(const type in colorDict[color].entities) {
-			
+
 			// entities variable contains all entities associated with given type
 			let entities = colorDict[color].entities;
 

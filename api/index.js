@@ -28,18 +28,19 @@ app.post('/remoteurl', (req, res) => {
 
     // JSON payload
     var obj = {
-        includedColors: {
+        x_extents: "",
+        y_extents: "",
+        included_colors: {
             totalLength: 0,
             colors: [],
         },
-        excludedColors: {
+        excluded_colors: {
             totalLength: 0,
             colors: [],
         },
         image: "",
-        extents: "",
-        unSupportedTypes: "none",
-        missingColors: "none",
+        unsupported_types: "none",
+        missing_colors: "none",
         message: "",
     };
 
@@ -48,9 +49,10 @@ app.post('/remoteurl', (req, res) => {
         getBodyURL(url).then(function(ret) {
             console.log("Received file, building DXF obj...");
 
-            var { dxf, unit, included} = req.body;
+            var { dxf, included} = req.body;
 
-            unit = (!unit || unit.trim() == "") ? "" : unit;
+            // Units deprecated
+            // unit = (!unit || unit.trim() == "") ? "" : unit;
             included = (!included || included == 'null' || included.trim() == "") ? null : included;
 
             var parser = new DxfParser();
@@ -66,13 +68,13 @@ app.post('/remoteurl', (req, res) => {
 
                 // Somehow an error reading and parsing DXF
                 console.log("Error reading DXF obj:", err.message);
-                obj.includedColors.colors.push({
-                    name: "Empty",
+                obj.included_colors.colors.push({
+                    name: "None",
                     length: 0,
                     area: 0
                 });
-                obj.excludedColors.colors.push({
-                    name: "Empty",
+                obj.excluded_colors.colors.push({
+                    name: "None",
                     length: 0,
                     area: 0
                 });
@@ -83,13 +85,13 @@ app.post('/remoteurl', (req, res) => {
     } else {
         // If no file is supplied
         console.log("Error: File/URL Invalid");
-        obj.includedColors.colors.push({
-            name: "Empty",
+        obj.included_colors.colors.push({
+            name: "None",
             length: 0,
             area: 0
         });
-        obj.excludedColors.colors.push({
-            name: "Empty",
+        obj.excluded_colors.colors.push({
+            name: "None",
             length: 0,
             area: 0
         });
@@ -110,18 +112,19 @@ app.post('/upload', (req, res) => {
     form.parse(req);
 
     var obj = {
-        includedColors: {
+        x_extents: "",
+        y_extents: "",
+        included_colors: {
             totalLength: 0,
             colors: [],
         },
-        excludedColors: {
+        excluded_colors: {
             totalLength: 0,
             colors: [],
         },
         image: "",
-        extents: "",
-        unSupportedTypes: [],
-        missingColors: [],
+        unsupported_types: [],
+        missing_colors: [],
         message: "",
     };
 
@@ -142,12 +145,12 @@ app.post('/upload', (req, res) => {
 
         } catch(err) {
             console.log(err);
-            obj.includedColors.colors.push({
+            obj.included_colors.colors.push({
                 name: "Empty",
                 length: 0,
                 area: 0
             });
-            obj.excludedColors.colors.push({
+            obj.excluded_colors.colors.push({
                 name: "Empty",
                 length: 0,
                 area: 0
