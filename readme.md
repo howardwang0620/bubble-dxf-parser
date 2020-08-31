@@ -1,15 +1,16 @@
 ## DXF API JSON Output
 
-The DXF API is a function that receives 3 parameters:
+The DXF API is a function that receives 2 parameters:
 * Remote file url for DXF
-* Unit value (in, cm, mm, etc.)
 * Included Colors (color code and names both work)
 
 Here is a preview of what an example output looks like:
 
 ```
 {
-    "includedColors": {
+    "x_extents": 28.977,
+    "y_extents": 12.727,
+    "included_colors": {
         "colors": [
             {
                 "name": "LIME",
@@ -17,9 +18,9 @@ Here is a preview of what an example output looks like:
                 "area": 282.869
             }
         ],
-        "totalLength": 72.333
+        "total_length": 72.333
     },
-    "excludedColors": {
+    "excluded_colors": {
         "colors": [
             {
                 "name": "Empty",
@@ -27,31 +28,32 @@ Here is a preview of what an example output looks like:
                 "area": 0
             }
         ],
-        "totalLength": 0
+        "total_length": 0
     },
     "image": "Base64 Encoded Image text here",
-    "extents": "28.977in x 12.727in",
-    "unSupportedTypes": "none",
-    "missingColors": "none",
+    "unsupported_types": "none",
+    "missing_colors": "none",
     "message": "Success!"
 }
 ```
 The output has 7 different keys:
-* includedColors
-* excludedColors
+* x_extents
+    * X Extent of DXF File
+* y_extents
+    * Y Extent of DXF File
+* included_colors
+* excluded_colors
 * image
-  * Base64 Encoded Image text representing the DXF file
-* extents
-  * DXF file extents with unit parameter if given
-* unsupportedTypes
-  * Text representing any entities not covered by the DXF parser
-  * Currently covers LINE, POLYLINE, LWPOLYLINE, SPLINE, CIRCLE, ELLIPSE, and ARC types
-* missingColors
-  * Text representing any colors missing from the included parameter
+    * Base64 Encoded Image text representing the DXF file
+* unsupported_types
+    * Text representing any entities not covered by the DXF parser
+    * Currently covers LINE, POLYLINE, LWPOLYLINE, SPLINE, CIRCLE, ELLIPSE, and ARC types
+* missing_colors
+    * Text representing any colors missing from the included parameter
 * message
-  * Text displaying API status
+    * Text displaying API status
 
-The includedColors and excludedColors keys are a nested JSON object and have **2** children keys each, **colors** which denotes a list of colors with their name and length/area calculations and **totalLength** which denotes the sum length of entities represented in the colors key.
+The included_colors and excluded_colors keys are a nested JSON object and have **2** children keys each, **colors** which denotes a list of colors with their name and length/area calculations and **total_length** which denotes the sum length of entities represented in the colors key.
 
 ## API Connector
 
@@ -65,11 +67,10 @@ We need to first define an API and give it a name, let's call it DXF. Click on '
 Once we've defined the API, we need to add a call which is essentially a function that will take parameters and return the important data that we need. Let's rename API call to DXF API and expand the box. Our API call is a POST API meaning we send data to the server and create a resource, our return JSON. Set the request type from GET to POST. Our API url resides on https:<span></span>//bubble-dxf-parser.herokuapp.com/remoteurl, so fill the box next to it with that. It should look like this now:
 ![image](./readmeimages/api-url.png)
 
-We now need to fill in the parameters being sent to the API call so head towards the 'Body' box to add our 3 inputs: url, unit, and included.
+We now need to fill in the parameters being sent to the API call so head towards the 'Body' box to add our 2 inputs: url and included.
 ```
 {
     "url": "https:<url>",
-    "unit": "<unit>",
     "included": "<included>"
 }
 ```
@@ -84,15 +85,15 @@ Go ahead and initialize the call by pressing "Initialize call" at the bottom and
 ![image](./readmeimages/api-return-data.png)
 
 ## Using API call in Bubble
-* ### Example external API call for extents on Text Box:
-To grab data from the API, simply insert dynamic data -> Get data from an external API -> choose 'DXF - DXF API' as the API provider -> fill in the parameters -> use extents. It should look like this:
+* ### Example external API call for x_extents on Text Box:
+To grab data from the API, simply insert dynamic data -> Get data from an external API -> choose 'DXF - DXF API' as the API provider -> fill in the parameters -> use x_extents. It should look like this:
 ![image](./readmeimages/api-text-example.png)
 
 * ### Example external API call on Repeating Group:
-We'll use the same approach as the text box example. Set the Data Source first by: Get data from an external API -> choose 'DXF - DXF API' as the API provider -> fill in the parameters -> use colors.We then choose the Type of Content, either 'DXF API includedColors color' or 'DXF API excludedColors color' depending on what you need. It should look like this:
+We'll use the same approach as the text box example. Set the Data Source first by: Get data from an external API -> choose 'DXF - DXF API' as the API provider -> fill in the parameters -> use colors.We then choose the Type of Content, either 'DXF API included_colors color' or 'DXF API excluded_colors color' depending on what you need. It should look like this:
 ![image](./readmeimages/api-rg-example.png)
 
-includedColors color will be a list of color calculations with fields name, length, and area data. You can display these in your Repeating Group with 3 text boxes representing each field like so:
+included_colors color will be a list of color calculations with fields name, length, and area data. You can display these in your Repeating Group with 3 text boxes representing each field like so:
 ![image](./readmeimages/api-rg-cell-example.png)
 
 * ### Example external API call for Button/Workflow:

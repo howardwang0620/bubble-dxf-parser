@@ -54,6 +54,6 @@ module.exports.processColorCalculation = function processColorCalculation(colorD
 
 	return {
 		colors: colorCalcs,
-		totalLength: totalLength,
+		total_length: totalLength,
 	};
 };

@@ -47,14 +47,14 @@ module.exports.splitColorDict = function splitColorDict(colors, included) {
     // fill in empty payload for included and excluded colors
     if(includedColors.length == 0) {
         includedColors.push({
-            name: "Empty",
+            name: "None",
             length: 0,
             area: 0,
         });
     }
     if(excludedColors.length == 0) {
         excludedColors.push({
-            name: "Empty",
+            name: "None",
             length: 0,
             area: 0,
         });
@@ -63,11 +63,11 @@ module.exports.splitColorDict = function splitColorDict(colors, included) {
     return {
         includedColors: {
             colors: includedColors,
-            totalLength: roundTo3Dec(includedLength),
+            total_length: roundTo3Dec(includedLength),
         },
         excludedColors: {
             colors: excludedColors,
-            totalLength: roundTo3Dec(excludedLength),
+            total_length: roundTo3Dec(excludedLength),
         },
         missingColors: missingColors,
     };

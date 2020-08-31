@@ -31,11 +31,11 @@ app.post('/remoteurl', (req, res) => {
         x_extents: "",
         y_extents: "",
         included_colors: {
-            totalLength: 0,
+            total_length: 0,
             colors: [],
         },
         excluded_colors: {
-            totalLength: 0,
+            total_length: 0,
             colors: [],
         },
         image: "",
@@ -59,7 +59,7 @@ app.post('/remoteurl', (req, res) => {
             try {
 
                 dxf = parser.parseSync(ret);
-                const dxfObj = parseDXF(dxf, obj, unit, included);
+                const dxfObj = parseDXF(dxf, obj, included);
 
                 // console.log("Returning DXF Object:", dxfObj);
                 console.log("Successfully parsed DXF! Sending obj...");
@@ -78,7 +78,7 @@ app.post('/remoteurl', (req, res) => {
                     length: 0,
                     area: 0
                 });
-                obj.message = "Error reading DXF object";
+                obj.message = "Error reading DXF object: " + err.message;
                 res.json(obj);
             }
         });
@@ -115,11 +115,11 @@ app.post('/upload', (req, res) => {
         x_extents: "",
         y_extents: "",
         included_colors: {
-            totalLength: 0,
+            total_length: 0,
             colors: [],
         },
         excluded_colors: {
-            totalLength: 0,
+            total_length: 0,
             colors: [],
         },
         image: "",
@@ -146,12 +146,12 @@ app.post('/upload', (req, res) => {
         } catch(err) {
             console.log(err);
             obj.included_colors.colors.push({
-                name: "Empty",
+                name: "None",
                 length: 0,
                 area: 0
             });
             obj.excluded_colors.colors.push({
-                name: "Empty",
+                name: "None",
                 length: 0,
                 area: 0
             });
