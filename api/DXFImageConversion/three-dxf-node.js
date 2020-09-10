@@ -1,10 +1,11 @@
 var THREE = require('three');
 require('three-canvas-renderer');
 const { createCanvas, loadImage } = require('canvas');
+var fs = require("fs");
 
 const Shapes = require('./shapes.js');
 
-function drawDXF(data, width, height) {
+function drawDXF(data, size) {
 	var scene = new THREE.Scene();
 	var dims = {
 		min: { x: false, y: false, z: false},
@@ -26,7 +27,7 @@ function drawDXF(data, width, height) {
 		obj = null;
 	}
 
-	var aspectRatio = width / height;
+	var aspectRatio = 1;
 
 	var upperRightCorner = { x: dims.max.x, y: dims.max.y };
 	var lowerLeftCorner = { x: dims.min.x, y: dims.min.y };
@@ -34,16 +35,19 @@ function drawDXF(data, width, height) {
 	var vp_width = upperRightCorner.x - lowerLeftCorner.x;
 	var vp_height = upperRightCorner.y - lowerLeftCorner.y;
 
+
 	var center = center || {
 		x: vp_width / 2 + lowerLeftCorner.x,
 		y: vp_height / 2 + lowerLeftCorner.y
 	};
 
 	var extentsAspectRatio = Math.abs(vp_width / vp_height);
+
+	console.log("EXTENTES ASP:", extentsAspectRatio);
 	if (aspectRatio > extentsAspectRatio) {
-		vp_width = vp_height * aspectRatio;
+		vp_width = vp_height * extentsAspectRatio;
 	} else {
-		vp_height = vp_width / aspectRatio;
+		vp_height = vp_width / extentsAspectRatio;
 	}
 
 	const zoom = 0.5;
@@ -63,16 +67,24 @@ function drawDXF(data, width, height) {
 	camera.position.x = viewPort.center.x;
 	camera.position.y = viewPort.center.y;
 
-	var canvas = createCanvas(width, height);
+	var canvas = createCanvas(size, size);
 	canvas.style = {};
 	var renderer = new THREE.CanvasRenderer({
 		canvas: canvas
 	});
 
 	renderer.setClearColor(0xffffff, 1);
-	renderer.setSize(width, height);
-
+	if (aspectRatio > extentsAspectRatio) {
+		renderer.setSize(size * extentsAspectRatio, size);
+	} else {
+		renderer.setSize(size, size / extentsAspectRatio);
+	}
 	renderer.render(scene, camera);
+
+	var out = fs.createWriteStream("./test-out.png");
+	var canvasStream = canvas.pngStream();
+	canvasStream.on("data", function (chunk) { out.write(chunk); });
+	// canvasStream.on("end", function () { console.log("done"); });
 
 	// Convert and return Base64 Encoded Image
 	return canvas.toDataURL('image/jpeg');

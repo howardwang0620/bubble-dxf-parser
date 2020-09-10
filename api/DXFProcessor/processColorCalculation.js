@@ -47,6 +47,8 @@ module.exports.processColorCalculation = function processColorCalculation(colorD
 				name: color,
 				length: calcs.length,
 				area: calcs.area,
+				x_extents: calcs.x_extents,
+				y_extents: calcs.y_extents,
 			});
 			totalLength += calcs.length;
 		}

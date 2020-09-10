@@ -50,6 +50,8 @@ module.exports.splitColorDict = function splitColorDict(colors, included) {
             name: "None",
             length: 0,
             area: 0,
+            x_extents: 0,
+            y_extents: 0,
         });
     }
     if(excludedColors.length == 0) {
@@ -57,6 +59,8 @@ module.exports.splitColorDict = function splitColorDict(colors, included) {
             name: "None",
             length: 0,
             area: 0,
+            x_extents: 0,
+            y_extents: 0,
         });
     }
 

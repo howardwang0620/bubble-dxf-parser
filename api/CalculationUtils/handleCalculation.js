@@ -19,7 +19,9 @@ var shapes = require('./shapeCalculations.js');
 module.exports.calculate = function calculate(types) {
 	var ret = {
 		length: 0,
-		area: 0
+		area: 0,
+		x_extents: 0,
+		y_extents: 0,
 	};
 	for(const type in types) {
 		var mergedList = types[type];

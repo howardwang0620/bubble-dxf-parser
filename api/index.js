@@ -71,12 +71,16 @@ app.post('/remoteurl', (req, res) => {
                 obj.included_colors.colors.push({
                     name: "None",
                     length: 0,
-                    area: 0
+                    area: 0,
+                    x_extents: 0,
+                    y_extents: 0,
                 });
                 obj.excluded_colors.colors.push({
                     name: "None",
                     length: 0,
-                    area: 0
+                    area: 0,
+                    x_extents: 0,
+                    y_extents: 0,
                 });
                 obj.message = "Error reading DXF object: " + err.message;
                 res.json(obj);
@@ -88,12 +92,16 @@ app.post('/remoteurl', (req, res) => {
         obj.included_colors.colors.push({
             name: "None",
             length: 0,
-            area: 0
+            area: 0,
+            x_extents: 0,
+            y_extents: 0,
         });
         obj.excluded_colors.colors.push({
             name: "None",
             length: 0,
-            area: 0
+            area: 0,
+            x_extents: 0,
+            y_extents: 0,
         });
         obj.message = "File/URL Invalid";
         res.json(obj);
@@ -148,12 +156,16 @@ app.post('/upload', (req, res) => {
             obj.included_colors.colors.push({
                 name: "None",
                 length: 0,
-                area: 0
+                area: 0,
+                x_extents: 0,
+                y_extents: 0,
             });
             obj.excluded_colors.colors.push({
                 name: "None",
                 length: 0,
-                area: 0
+                area: 0,
+                x_extents: 0,
+                y_extents: 0,
             });
             obj.message = "Error reading DXF object";
 
