@@ -25,8 +25,8 @@ module.exports.splitColorDict = function splitColorDict(colors, included) {
     colors.forEach(function(e) {
         e.length = roundToNDec(e.length, 3);
         e.area = roundToNDec(e.area, 3);
-        e.x_extents = roundToNDec(e.x_extents, 2);
-        e.y_extents = roundToNDec(e.y_extents, 2);
+        e.x_extents = roundToNDec(e.x_extents, 2).toString();
+        e.y_extents = roundToNDec(e.y_extents, 2).toString();
 
         if(included.size == 0) {
             includedColors.push(e);
