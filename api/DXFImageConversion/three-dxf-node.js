@@ -79,10 +79,10 @@ function drawDXF(data, size) {
 	}
 	renderer.render(scene, camera);
 
-	var out = fs.createWriteStream("./test-out.png");
-	var canvasStream = canvas.pngStream();
-	canvasStream.on("data", function (chunk) { out.write(chunk); });
-	// canvasStream.on("end", function () { console.log("done"); });
+	// // test by converting to png
+	// var out = fs.createWriteStream("./test-out.png");
+	// var canvasStream = canvas.pngStream();
+	// canvasStream.on("data", function (chunk) { out.write(chunk); });
 
 	// Convert and return Base64 Encoded Image
 	return canvas.toDataURL('image/jpeg');
