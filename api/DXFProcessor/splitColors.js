@@ -1,4 +1,4 @@
-var { getColor, roundTo3Dec } = require('../Utilities/utilities.js');
+var { getColor, roundToNDec } = require('../Utilities/utilities.js');
 
 module.exports.splitColorDict = function splitColorDict(colors, included) {
     // convert included string to array
@@ -23,8 +23,11 @@ module.exports.splitColorDict = function splitColorDict(colors, included) {
     // if included is defined and not in included, add to excluded
     var usedColors = new Set();
     colors.forEach(function(e) {
-        e.length = roundTo3Dec(e.length);
-        e.area = roundTo3Dec(e.area);
+        e.length = roundToNDec(e.length, 3);
+        e.area = roundToNDec(e.area, 3);
+        e.x_extents = roundToNDec(e.x_extents, 2);
+        e.y_extents = roundToNDec(e.y_extents, 2);
+
         if(included.size == 0) {
             includedColors.push(e);
             includedLength += e.length;
@@ -67,11 +70,11 @@ module.exports.splitColorDict = function splitColorDict(colors, included) {
     return {
         includedColors: {
             colors: includedColors,
-            total_length: roundTo3Dec(includedLength),
+            total_length: roundToNDec(includedLength, 3),
         },
         excludedColors: {
             colors: excludedColors,
-            total_length: roundTo3Dec(excludedLength),
+            total_length: roundToNDec(excludedLength, 3),
         },
         missingColors: missingColors,
     };

@@ -1,4 +1,4 @@
-var { roundTo6Dec } = require('../Utilities/utilities.js');
+var { roundToNDec } = require('../Utilities/utilities.js');
 
 module.exports.mergePolyLines = function mergePolyLines(entities) {
 	var visited = new Array(entities.length).fill(false);
@@ -52,8 +52,8 @@ function checkDisjointClosed(entities) {
 	var set = new Set();
 	for(var entity of entities) {
 		var vt = entity.vertices;
-		set.add(roundTo6Dec(vt[0].x) + " " + roundTo6Dec(vt[0].y));
-		set.add(roundTo6Dec(vt[vt.length - 1].x) + " " + roundTo6Dec(vt[vt.length - 1].y));
+		set.add(roundToNDec(vt[0].x, 6) + " " + roundToNDec(vt[0].y, 6));
+		set.add(roundToNDec(vt[vt.length - 1].x, 6) + " " + roundToNDec(vt[vt.length - 1].y, 6));
 	}
 
 	return set.size == entities.length;
@@ -68,23 +68,23 @@ function mergePolyLinesDFS(entities, pos, list, visited) {
 
 	var vt = entities[pos].vertices;
 	let start = {
-		x: roundTo6Dec(vt[0].x),
-		y: roundTo6Dec(vt[0].y),
+		x: roundToNDec(vt[0].x, 6),
+		y: roundToNDec(vt[0].y, 6),
 	};
 	let end = {
-		x: roundTo6Dec(vt[vt.length - 1].x),
-		y: roundTo6Dec(vt[vt.length - 1].y),
+		x: roundToNDec(vt[vt.length - 1].x, 6),
+		y: roundToNDec(vt[vt.length - 1].y, 6),
 	};
 
 	for(var i = 0; i < entities.length; i++) {
 		var currVt = entities[i].vertices;
 		var currStart = {
-			x: roundTo6Dec(currVt[0].x),
-			y: roundTo6Dec(currVt[0].y),
+			x: roundToNDec(currVt[0].x, 6),
+			y: roundToNDec(currVt[0].y, 6),
 		};
 		var currEnd = {
-			x: roundTo6Dec(currVt[currVt.length - 1].x),
-			y: roundTo6Dec(currVt[currVt.length - 1].y),
+			x: roundToNDec(currVt[currVt.length - 1].x, 6),
+			y: roundToNDec(currVt[currVt.length - 1].y, 6),
 		};
 
 		// don't check visited nodes

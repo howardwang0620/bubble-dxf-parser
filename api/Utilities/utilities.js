@@ -8,12 +8,7 @@ function getColor(col) {
 }
 module.exports.getColor = getColor;
 
-function roundTo3Dec(num) {
-    return Math.round((num) * 1000) / 1000;
+function roundToNDec(num, N) {
+    return Math.round((num) * Math.pow(10, N)) / Math.pow(10, N);
 }
-module.exports.roundTo3Dec = roundTo3Dec;
-
-function roundTo6Dec(num) {
-    return Math.round((num) * 1000000) / 1000000;
-}
-module.exports.roundTo6Dec = roundTo6Dec;
+module.exports.roundToNDec = roundToNDec;

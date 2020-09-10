@@ -1,6 +1,6 @@
 var bspline = require('b-spline');
 
-module.exports.lineCalculation = function lineCalculation(entity) {
+module.exports.lineCalculation = function lineCalculation(entity, dims) {
 	const x1 = entity.vertices[0].x;
 	const y1 = entity.vertices[0].y;
 
@@ -9,6 +9,18 @@ module.exports.lineCalculation = function lineCalculation(entity) {
 
 	var length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 	var area = Math.abs(x1 * y2) - Math.abs(x2 * y1);
+
+	// handle dimensions for coordinate1
+	dims.min_x = Math.min(x1, dims.min_x);
+	dims.max_x = Math.max(x1, dims.max_x);
+	dims.min_y = Math.min(y1, dims.min_y);
+	dims.max_y = Math.max(y1, dims.max_y);
+
+	// handle dimensions for coordinate2
+	dims.min_x = Math.min(x2, dims.min_x);
+	dims.max_x = Math.max(x2, dims.max_x);
+	dims.min_y = Math.min(y2, dims.min_y);
+	dims.max_y = Math.max(y2, dims.max_y);
 
 	return {
 		length: length,
@@ -19,7 +31,7 @@ module.exports.lineCalculation = function lineCalculation(entity) {
 // DOES NOT HANDLE AREA FOR COMPLEX POLYGONS
 // Calculates length and area of polylines
 // Area calculated using Coordinate Geometry
-module.exports.polyLineCalculation = function polyLineCalculation(entity) {
+module.exports.polyLineCalculation = function polyLineCalculation(entity, dims) {
 
 	//handle length and area calculations
 	var length = 0;
@@ -37,8 +49,19 @@ module.exports.polyLineCalculation = function polyLineCalculation(entity) {
 
 		// handle area
 		area += Math.abs(x1 * y2) - Math.abs(x2 * y1);
+
+		// handle dimensions
+		dims.min_x = Math.min(x1, dims.min_x);
+		dims.max_x = Math.max(x1, dims.max_x);
+		dims.min_y = Math.min(y1, dims.min_y);
+		dims.max_y = Math.max(y1, dims.max_y);
 	}
 
+	// handle dimensions for last coordinate
+	dims.min_x = Math.min(vt[vt.length - 1].x, dims.min_x);
+	dims.max_x = Math.max(vt[vt.length - 1].x, dims.max_x);
+	dims.min_y = Math.min(vt[vt.length - 1].y, dims.min_y);
+	dims.max_y = Math.max(vt[vt.length - 1].y, dims.max_y);
 
 	//make last calculation if first point and last points don't match
 	//get length and area distance from last to first point
@@ -62,7 +85,7 @@ module.exports.polyLineCalculation = function polyLineCalculation(entity) {
 
 // Uses b-spline library to get interpolation of points
 // Length and area calculated from integral t=0->1 with t+= 0.0001
-module.exports.splineCalculation = function splineCalculation(entity) {
+module.exports.splineCalculation = function splineCalculation(entity, dims) {
 	const degree = entity.degreeOfSplineCurve;
 	const knots = entity.knotValues;
 
@@ -86,9 +109,21 @@ module.exports.splineCalculation = function splineCalculation(entity) {
 			length += Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 
 			area += Math.abs(x1 * y2) - Math.abs(x2 * y1);
+
+			// handle dimensions
+			dims.min_x = Math.min(x1, dims.min_x);
+			dims.max_x = Math.max(x1, dims.max_x);
+			dims.min_y = Math.min(y1, dims.min_y);
+			dims.max_y = Math.max(y1, dims.max_y);
 		}
 		lastPoint = point;
 	}
+
+	// handle dimensions for last coordinate
+	dims.min_x = Math.min(lastPoint[0], dims.min_x);
+	dims.max_x = Math.max(lastPoint[0], dims.max_x);
+	dims.min_y = Math.min(lastPoint[1], dims.min_y);
+	dims.max_y = Math.max(lastPoint[1], dims.max_y);
 
 	return {
 		length: length,
@@ -96,14 +131,19 @@ module.exports.splineCalculation = function splineCalculation(entity) {
 	};
 };
 
-module.exports.circleCalculation = function circleCalculation(entity) {
+module.exports.circleCalculation = function circleCalculation(entity, dims) {
+	dims.min_x = Math.min(entity.center.x - entity.radius, dims.min_x);
+	dims.max_x = Math.max(entity.center.x + entity.radius, dims.max_x);
+	dims.min_y = Math.min(entity.center.y - entity.radius, dims.min_y);
+	dims.max_y = Math.max(entity.center.y + entity.radius, dims.max_y);
+
 	return {
 		length: entity.radius * 2 * Math.PI,
 		area: Math.pow(entity.radius, 2) * Math.PI,
 	};
 };
 
-module.exports.ellipseCalculation = function ellipseCalculation(entity) {
+module.exports.ellipseCalculation = function ellipseCalculation(entity, dims) {
 	// Calculate dist from maj axis points to center
 	const majAxisX = Math.abs(entity.majorAxisEndPoint.x);
 	const majAxisY = Math.abs(entity.majorAxisEndPoint.y);
@@ -128,7 +168,7 @@ module.exports.ellipseCalculation = function ellipseCalculation(entity) {
 	};
 };
 
-module.exports.arcCalculation = function arcCalculation(entity) {
+module.exports.arcCalculation = function arcCalculation(entity, dims) {
 	return {
 		length: entity.radius * entity.angleLength,
 		area: 0

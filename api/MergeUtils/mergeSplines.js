@@ -1,4 +1,4 @@
-var { roundTo6Dec } = require('../Utilities/utilities.js');
+var { roundToNDec } = require('../Utilities/utilities.js');
 
 module.exports.mergeSplines = function mergeSplines(entities) {
 	var visited = new Array(entities.length).fill(false);
@@ -39,8 +39,8 @@ function checkClosed(entities) {
 	var set = new Set();
 	for(var entity of entities) {
 		var cp = entity.controlPoints;
-		set.add(roundTo6Dec(cp[0].x) + " " + roundTo6Dec(cp[0].y));
-		set.add(roundTo6Dec(cp[cp.length - 1].x) + " " + roundTo6Dec(cp[cp.length - 1].y));
+		set.add(roundToNDec(cp[0].x, 6) + " " + roundToNDec(cp[0].y, 6));
+		set.add(roundToNDec(cp[cp.length - 1].x, 6) + " " + roundToNDec(cp[cp.length - 1].y, 6));
 	}
 
 	return set.size == entities.length;
@@ -55,23 +55,23 @@ function mergeSplinesDFS(entities, pos, list, visited) {
 
 	var cp = entities[pos].controlPoints;
 	let start = {
-		x: roundTo6Dec(cp[0].x),
-		y: roundTo6Dec(cp[0].y),
+		x: roundToNDec(cp[0].x, 6),
+		y: roundToNDec(cp[0].y, 6),
 	};
 	let end = {
-		x: roundTo6Dec(cp[cp.length - 1].x),
-		y: roundTo6Dec(cp[cp.length - 1].y),
+		x: roundToNDec(cp[cp.length - 1].x, 6),
+		y: roundToNDec(cp[cp.length - 1].y, 6),
 	};
 
 	for(var i = 0; i < entities.length; i++) {
 		var currCp = entities[i].controlPoints;
 		var currStart = {
-			x: roundTo6Dec(currCp[0].x),
-			y: roundTo6Dec(currCp[0].y),
+			x: roundToNDec(currCp[0].x, 6),
+			y: roundToNDec(currCp[0].y, 6),
 		};
 		var currEnd = {
-			x: roundTo6Dec(currCp[currCp.length - 1].x),
-			y: roundTo6Dec(currCp[currCp.length - 1].y),
+			x: roundToNDec(currCp[currCp.length - 1].x, 6),
+			y: roundToNDec(currCp[currCp.length - 1].y, 6),
 		};
 
 		// don't check visited nodes

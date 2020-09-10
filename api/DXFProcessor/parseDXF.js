@@ -3,7 +3,7 @@ var { processColorCalculation } = require('./processColorCalculation.js');
 const { calculate } = require('../CalculationUtils/handleCalculation.js');
 var { splitColorDict } = require('./splitColors.js');
 const THREEdxf = require('../DXFImageConversion/three-dxf-node.js');
-var { roundTo3Dec } = require('../Utilities/utilities.js');
+var { roundToNDec } = require('../Utilities/utilities.js');
 
 // Parses a DXF function taking a dxf object (read using module 'dxf-parser')
 // a unit parameter specifying the measurement (eg. cm, in, ft)
@@ -13,8 +13,8 @@ module.exports.parseDXF = function parseDXF(dxf, obj, includedColors) {
     console.log("Parsing DXF...");
 
     // Get extents and set extents for obj
-    const xExtent = roundTo3Dec(dxf.header.$EXTMAX.x - dxf.header.$EXTMIN.x);
-    const yExtent = roundTo3Dec(dxf.header.$EXTMAX.y - dxf.header.$EXTMIN.y);
+    const xExtent = roundToNDec(dxf.header.$EXTMAX.x - dxf.header.$EXTMIN.x, 3);
+    const yExtent = roundToNDec(dxf.header.$EXTMAX.y - dxf.header.$EXTMIN.y, 3);
 
     // Units deprecated
     // if(!unit || unit == "") unit = "";

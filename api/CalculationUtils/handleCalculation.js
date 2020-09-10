@@ -23,11 +23,20 @@ module.exports.calculate = function calculate(types) {
 		x_extents: 0,
 		y_extents: 0,
 	};
+
+	// dimensions to hold min,max x and y values
+	var dimensions = {
+		min_x: Number.MAX_SAFE_INTEGER,
+		max_x: Number.MIN_SAFE_INTEGER,
+		min_y: Number.MAX_SAFE_INTEGER,
+		max_y: Number.MIN_SAFE_INTEGER,
+	};
+
 	for(const type in types) {
 		var mergedList = types[type];
 		for(var i = 0; i < mergedList.length; i++) {
 			var entity = mergedList[i];
-			var calcs = handleCalculation(entity, type);
+			var calcs = handleCalculation(entity, type, dimensions);
 
 			// If entity is supported, add together lengths and areas for given type to ret object
 			if(!calcs.message) {
@@ -37,6 +46,10 @@ module.exports.calculate = function calculate(types) {
 		}
 	}
 
+	// set extents
+	ret.x_extents = dimensions.max_x - dimensions.min_x;
+	ret.y_extents = dimensions.max_y - dimensions.min_y;
+
 	return ret;
 };
 
@@ -44,25 +57,25 @@ module.exports.calculate = function calculate(types) {
 Area and length calculations depending on entity
 Any unsupported entities will have been caught by mergehandler, don't need to worry here
 */
-function handleCalculation(entity, type) {
+function handleCalculation(entity, type, dims) {
 	switch(type) {
 		case 'LINE':
-			return handleLine(entity);
+			return handleLine(entity, dims);
 		case 'POLYLINE':
 		case 'LWPOLYLINE':
-			return handlePolyLine(entity);
+			return handlePolyLine(entity, dims);
 		case 'SPLINE':
-			return handleSpline(entity);
+			return handleSpline(entity, dims);
 		case 'CIRCLE':
-			return handleCircle(entity);
+			return handleCircle(entity, dims);
 		case 'ELLIPSE':
-			return handleEllipse(entity);
+			return handleEllipse(entity, dims);
 		case 'ARC':
-			return handleArc(entity);
+			return handleArc(entity, dims);
 	}
 }
 
-function handleLine(entity, calc) {
+function handleLine(entity, dims) {
 	var entities = entity.merged;
 	var closed = entity.closed;
 
@@ -73,7 +86,7 @@ function handleLine(entity, calc) {
 
 	var length = 0;
 	for(var i = 0; i < entities.length; i++) {
-		var calcs = shapes.lineCalculation(entities[i]);
+		var calcs = shapes.lineCalculation(entities[i], dims);
 
 		def.length += calcs.length;
 		if(closed) def.area += calcs.area;
@@ -84,7 +97,7 @@ function handleLine(entity, calc) {
 	return def;
 }
 
-function handlePolyLine(entity) {
+function handlePolyLine(entity, dims) {
 	var entities = entity.merged;
 	var closed = entity.closed;
 
@@ -93,7 +106,7 @@ function handlePolyLine(entity) {
 		area: 0,
 	};
 	for(var i = 0; i < entities.length; i++) {
-		var calcs = shapes.polyLineCalculation(entities[i]);
+		var calcs = shapes.polyLineCalculation(entities[i], dims);
 
 		def.length += calcs.length;
 		if(closed) def.area += calcs.area;
@@ -103,7 +116,7 @@ function handlePolyLine(entity) {
 	return def;
 }
 
-function handleSpline(entity) {
+function handleSpline(entity, dims) {
 	var entities = entity.merged;
 	var closed = entity.closed;
 
@@ -113,7 +126,7 @@ function handleSpline(entity) {
 	};
 
 	for(var i = 0; i < entities.length; i++) {
-		var calcs = shapes.splineCalculation(entities[i]);
+		var calcs = shapes.splineCalculation(entities[i], dims);
 
 		def.length += calcs.length;
 		if(closed) def.area += calcs.area;
@@ -124,7 +137,7 @@ function handleSpline(entity) {
 	return def;
 }
 
-function handleCircle(entity) {
+function handleCircle(entity, dims) {
 	var entities = entity.merged;
 	var closed = entity.closed;
 
@@ -134,7 +147,7 @@ function handleCircle(entity) {
 	};
 
 	for(var i = 0; i < entities.length; i++) {
-		var calcs = shapes.circleCalculation(entities[i]);
+		var calcs = shapes.circleCalculation(entities[i], dims);
 		def.length += calcs.length;
 		def.area += calcs.area;
 	}
@@ -142,7 +155,7 @@ function handleCircle(entity) {
 	return def;
 }
 
-function handleEllipse(entity) {
+function handleEllipse(entity, dims) {
 	var entities = entity.merged;
 	var closed = entity.closed;
 
@@ -152,7 +165,7 @@ function handleEllipse(entity) {
 	};
 
 	for(var i = 0; i < entities.length; i++) {
-		var calcs = shapes.ellipseCalculation(entities[i]);
+		var calcs = shapes.ellipseCalculation(entities[i], dims);
 		def.length += calcs.length;
 		def.area += calcs.area;
 	}
@@ -160,7 +173,7 @@ function handleEllipse(entity) {
 	return def;
 }
 
-function handleArc(entity) {
+function handleArc(entity, dims) {
 	var entities = entity.merged;
 	var closed = entity.closed;
 
@@ -170,7 +183,7 @@ function handleArc(entity) {
 	};
 
 	for(var i = 0; i < entities.length; i++) {
-		var calcs = shapes.arcCalculation(entities[i]);
+		var calcs = shapes.arcCalculation(entities[i], dims);
 		def.length += calcs.length;
 	}
 
