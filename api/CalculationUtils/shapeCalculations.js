@@ -144,16 +144,12 @@ module.exports.circleCalculation = function circleCalculation(entity, dims) {
 };
 
 module.exports.ellipseCalculation = function ellipseCalculation(entity, dims) {
-	// Calculate dist from maj axis points to center
-	const majAxisX = Math.abs(entity.majorAxisEndPoint.x);
-	const majAxisY = Math.abs(entity.majorAxisEndPoint.y);
 
-	const a = (Math.sqrt(Math.pow(majAxisX, 2) + Math.pow(majAxisY, 2)));
+	// Distance formula to get max axis length
+	const a = (Math.sqrt(Math.pow(entity.majorAxisEndPoint.x, 2) + Math.pow(entity.majorAxisEndPoint.y, 2)));
 
-	// Calculate dist from min axis points to center
-	const minAxisX = entity.majorAxisEndPoint.y * entity.axisRatio;
-	const minAxisY = entity.majorAxisEndPoint.x * entity.axisRatio;
-	const b = (Math.sqrt(Math.pow(minAxisX, 2) + Math.pow(minAxisY, 2)));
+	// Calculate min axis length
+	const b = a * entity.axisRatio;
 
 	// Ramanujan Approximation for circumference
 	const h = (Math.pow(a - b, 2) / Math.pow(a + b, 2));
@@ -162,6 +158,24 @@ module.exports.ellipseCalculation = function ellipseCalculation(entity, dims) {
 	// Area calculation
 	const area = a * b * Math.PI;
 
+	// Handle dims here -> referenced https://math.stackexchange.com/questions/91132/how-to-get-the-limits-of-rotated-ellipse
+	// calculate angle
+	const angle = Math.atan2(entity.majorAxisEndPoint.y, entity.majorAxisEndPoint.x);
+
+	// calculate limits of ellipse
+	// calc length of y limit
+	const x = Math.sqrt( Math.pow(a, 2) * Math.pow(Math.cos(angle), 2) + 
+						Math.pow(b, 2) * Math.pow(Math.sin(angle), 2) );
+
+	// calc length of x limit
+	const y = Math.sqrt( Math.pow(a, 2) * Math.pow(Math.sin(angle), 2) + 
+						Math.pow(b, 2) * Math.pow(Math.cos(angle), 2) );
+
+	dims.min_x = Math.min(entity.center.x - x, dims.min_x);
+	dims.max_x = Math.max(entity.center.x + x, dims.max_x);
+	dims.min_y = Math.min(entity.center.y - y, dims.min_y);
+	dims.max_y = Math.max(entity.center.y + y, dims.max_y);
+
 	return {
 		length: circumference,
 		area: area,
@@ -169,8 +183,57 @@ module.exports.ellipseCalculation = function ellipseCalculation(entity, dims) {
 };
 
 module.exports.arcCalculation = function arcCalculation(entity, dims) {
+	const center = entity.center;
+	const radius = entity.radius;
+	const start = entity.startAngle;
+	const end = entity.endAngle;
+
+	const x1 = center.x + radius * Math.cos(start);
+	const y1 = center.y + radius * Math.sin(start);
+
+	const x2 = center.x + radius * Math.cos(end);
+	const y2 = center.y + radius * Math.sin(end);
+
+	console.log(x2, y2);
+
+	// if minimum X angle (occurs at 180° or pi) is in range of empty space in arc
+	// set to smaller of 2 arc endpoint X pos' else set to X pos at 180°
+	const minXAngle = Math.PI;
+	if(minXAngle < start && minXAngle > end) {
+		dims.min_x = Math.min(Math.min(x1, x2), dims.min_x);
+	} else {
+		dims.min_x = Math.min(center.x - radius, dims.min_x);
+	}
+
+	// if maximum X angle (occurs at 0° or 0) is in range of empty space in arc
+	// set to smaller of 2 arc endpoint X pos' else set to X pos at 0°
+	const maxXAngle = 0;
+	if(maxXAngle < start && maxXAngle > end) {
+		dims.max_x = Math.max(Math.max(x1, x2), dims.max_x);
+	} else {
+		dims.max_x = Math.max(center.x + radius, dims.max_x);
+	}
+
+	// if minimum Y angle (occurs at 270° or 3pi/2) is in range of empty space in arc
+	// set to smaller of 2 arc endpoint Y pos' else set to Y pos at 270°
+	const minYAngle = 3 * Math.PI / 2;
+	if(minYAngle < start && minYAngle > end) {
+		dims.min_y = Math.min(Math.min(y1, y2), dims.min_y);
+	} else {
+		dims.min_y = Math.min(center.y - radius, dims.min_y);
+	}
+
+	// if maximum Y angle (occurs at 90° or pi/2) is in range of empty space in arc
+	// set to smaller of 2 arc endpoint Y pos' else set to Y pos at 90°
+	const maxYAngle = Math.PI / 2;
+	if(maxYAngle < start && maxYAngle > end) {
+		dims.max_y = Math.max(Math.max(y1, y2), dims.max_y);
+	} else {
+		dims.max_y = Math.max(center.y + radius, dims.max_y);
+	}
+
 	return {
-		length: entity.radius * entity.angleLength,
+		length: radius * (2 * Math.PI - Math.abs(entity.angleLength)),
 		area: 0
 	};
 };

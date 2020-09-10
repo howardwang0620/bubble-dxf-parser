@@ -42,8 +42,6 @@ function drawDXF(data, size) {
 	};
 
 	var extentsAspectRatio = Math.abs(vp_width / vp_height);
-
-	console.log("EXTENTES ASP:", extentsAspectRatio);
 	if (aspectRatio > extentsAspectRatio) {
 		vp_width = vp_height * extentsAspectRatio;
 	} else {
