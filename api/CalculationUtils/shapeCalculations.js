@@ -194,46 +194,52 @@ module.exports.arcCalculation = function arcCalculation(entity, dims) {
 	const x2 = center.x + radius * Math.cos(end);
 	const y2 = center.y + radius * Math.sin(end);
 
-	console.log(x2, y2);
 
-	// if minimum X angle (occurs at 180° or pi) is in range of empty space in arc
-	// set to smaller of 2 arc endpoint X pos' else set to X pos at 180°
-	const minXAngle = Math.PI;
-	if(minXAngle < start && minXAngle > end) {
-		dims.min_x = Math.min(Math.min(x1, x2), dims.min_x);
-	} else {
-		dims.min_x = Math.min(center.x - radius, dims.min_x);
-	}
+	//UNFINISHED
+	
+	// // if minimum X angle (occurs at 180° or pi) is in range of empty space in arc
+	// // set to smaller of 2 arc endpoint X pos' else set to X pos at 180°
+	// const minXAngle = Math.PI;
+	// if(minXAngle < start && minXAngle > end) {
+	// 	dims.min_x = Math.min(Math.min(x1, x2), dims.min_x);
+	// } else {
+	// 	dims.min_x = Math.min(center.x - radius, dims.min_x);
+	// }
 
-	// if maximum X angle (occurs at 0° or 0) is in range of empty space in arc
-	// set to smaller of 2 arc endpoint X pos' else set to X pos at 0°
-	const maxXAngle = 0;
-	if(maxXAngle < start && maxXAngle > end) {
-		dims.max_x = Math.max(Math.max(x1, x2), dims.max_x);
-	} else {
-		dims.max_x = Math.max(center.x + radius, dims.max_x);
-	}
+	// // if maximum X angle (occurs at 0° or 0 OR 360° or 2 * pi) is in range of empty space in arc
+	// // set to smaller of 2 arc endpoint X pos' else set to X pos at 0°
+	// //start = 46
+	// //end = 327
+	// //max angle = 0
+	// const maxXAngle = 0;
+	// if(0 < start && 2 * Math.PI > end) {
+	// 	dims.max_x = Math.max(Math.max(x1, x2), dims.max_x);
+	// } else {
+	// 	dims.max_x = Math.max(center.x + radius, dims.max_x);
+	// }
 
-	// if minimum Y angle (occurs at 270° or 3pi/2) is in range of empty space in arc
-	// set to smaller of 2 arc endpoint Y pos' else set to Y pos at 270°
-	const minYAngle = 3 * Math.PI / 2;
-	if(minYAngle < start && minYAngle > end) {
-		dims.min_y = Math.min(Math.min(y1, y2), dims.min_y);
-	} else {
-		dims.min_y = Math.min(center.y - radius, dims.min_y);
-	}
+	// // if minimum Y angle (occurs at 270° or 3pi/2) is in range of empty space in arc
+	// // set to smaller of 2 arc endpoint Y pos' else set to Y pos at 270°
+	// const minYAngle = 3 * Math.PI / 2;
+	// if(minYAngle < start && minYAngle > end) {
+	// 	dims.min_y = Math.min(Math.min(y1, y2), dims.min_y);
+	// } else {
+	// 	dims.min_y = Math.min(center.y - radius, dims.min_y);
+	// }
 
-	// if maximum Y angle (occurs at 90° or pi/2) is in range of empty space in arc
-	// set to smaller of 2 arc endpoint Y pos' else set to Y pos at 90°
-	const maxYAngle = Math.PI / 2;
-	if(maxYAngle < start && maxYAngle > end) {
-		dims.max_y = Math.max(Math.max(y1, y2), dims.max_y);
-	} else {
-		dims.max_y = Math.max(center.y + radius, dims.max_y);
-	}
+	// // if maximum Y angle (occurs at 90° or pi/2) is in range of empty space in arc
+	// // set to smaller of 2 arc endpoint Y pos' else set to Y pos at 90°
+	// const maxYAngle = Math.PI / 2;
+	// if(maxYAngle < start && maxYAngle > end) {
+	// 	dims.max_y = Math.max(Math.max(y1, y2), dims.max_y);
+	// } else {
+	// 	dims.max_y = Math.max(center.y + radius, dims.max_y);
+	// }
 
+	// set angle to calculate length
+	var angle = (entity.angleLength < 0) ? 2 * Math.PI + entity.angleLength : entity.angleLength;
 	return {
-		length: radius * (2 * Math.PI - Math.abs(entity.angleLength)),
+		length: radius * angle,
 		area: 0
 	};
 };
