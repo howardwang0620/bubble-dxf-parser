@@ -13,7 +13,7 @@ Here is a preview of what an example output looks like:
     "included_colors": {
         "colors": [
             {
-                "name": "LIME",
+                "name": "#00FF00",
                 "length": 72.333,
                 "area": 282.869
             }
@@ -49,11 +49,11 @@ The output has 7 different keys:
     * Text representing any entities not covered by the DXF parser
     * Currently covers LINE, POLYLINE, LWPOLYLINE, SPLINE, CIRCLE, ELLIPSE, and ARC types
 * missing_colors
-    * Text representing any colors missing from the included parameter
+    * List representing missing hex color values from the included parameter
 * message
     * Text displaying API status
 
-The included_colors and excluded_colors keys are a nested JSON object and have **2** children keys each, **colors** which denotes a list of colors with their name and length/area calculations and **total_length** which denotes the sum length of entities represented in the colors key.
+The included_colors and excluded_colors keys are a nested JSON object and have **2** children keys each, **colors** which denotes a list of colors with their hex values and length/area calculations and **total_length** which denotes the sum length of entities represented in the colors key.
 
 ## API Connector
 
