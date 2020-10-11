@@ -1,15 +1,15 @@
-var { getColor, roundToNDec } = require('../Utilities/utilities.js');
+var { getColor, getHex, roundToNDec } = require('../Utilities/utilities.js');
 
 module.exports.splitColorDict = function splitColorDict(colors, included) {
     // convert included string to array
     // included will either be empty or filled
-    if(included)
-    included = new Set(included.split(",").map(e => {
-        if(!isNaN(e)) return getColor(e.trim());
-        else return e.trim().toUpperCase();
-    }));
+    if (included)
+        included = new Set(included.split(",").map(e => {
+            if (!isNaN(e)) return getHex(e.trim());
+            else return e.trim().toUpperCase();
+        }));
     else
-    included = new Set();
+        included = new Set();
 
     var includedColors = [];
     var includedLength = 0;
@@ -28,10 +28,10 @@ module.exports.splitColorDict = function splitColorDict(colors, included) {
         e.x_extents = roundToNDec(e.x_extents, 2);
         e.y_extents = roundToNDec(e.y_extents, 2);
 
-        if(included.size == 0) {
+        if (included.size == 0) {
             includedColors.push(e);
             includedLength += e.length;
-        } else if(included.size > 0 && included.has(e.name)) {
+        } else if (included.size > 0 && included.has(e.name)) {
             includedColors.push(e);
             includedLength += e.length;
             usedColors.add(e.name);
@@ -48,7 +48,7 @@ module.exports.splitColorDict = function splitColorDict(colors, included) {
     var missingColors = Array.from(included);
 
     // fill in empty payload for included and excluded colors
-    if(includedColors.length == 0) {
+    if (includedColors.length == 0) {
         includedColors.push({
             name: "None",
             length: 0,
@@ -57,7 +57,7 @@ module.exports.splitColorDict = function splitColorDict(colors, included) {
             y_extents: 0,
         });
     }
-    if(excludedColors.length == 0) {
+    if (excludedColors.length == 0) {
         excludedColors.push({
             name: "None",
             length: 0,

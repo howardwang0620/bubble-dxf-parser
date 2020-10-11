@@ -73,16 +73,18 @@ function drawDXF(data, size) {
 
 	renderer.setClearColor(0xffffff, 1);
 	if (aspectRatio > extentsAspectRatio) {
-		renderer.setSize(size * extentsAspectRatio, size);
-	} else {
+		// renderer.setSize(size * extentsAspectRatio, size);
 		renderer.setSize(size, size / extentsAspectRatio);
+	} else {
+		// renderer.setSize(size, size / extentsAspectRatio);
+		renderer.setSize(size * extentsAspectRatio, size);
 	}
 	renderer.render(scene, camera);
 
-	// // test by converting to png
-	// var out = fs.createWriteStream("./test-out.png");
-	// var canvasStream = canvas.pngStream();
-	// canvasStream.on("data", function (chunk) { out.write(chunk); });
+	// test by converting to png
+	var out = fs.createWriteStream("./test-out.png");
+	var canvasStream = canvas.pngStream();
+	canvasStream.on("data", function (chunk) { out.write(chunk); });
 
 	// Convert and return Base64 Encoded Image
 	return canvas.toDataURL('image/jpeg');

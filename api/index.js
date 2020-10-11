@@ -45,11 +45,11 @@ app.post('/remoteurl', (req, res) => {
     };
 
     const url = req.body.url;
-    if(url && validUrl.isHttpsUri(url)) {
+    if (url && validUrl.isHttpsUri(url)) {
         getBodyURL(url).then(function(ret) {
             console.log("Received file, building DXF obj...");
 
-            var { dxf, included} = req.body;
+            var { dxf, included } = req.body;
 
             // Units deprecated
             // unit = (!unit || unit.trim() == "") ? "" : unit;
@@ -64,7 +64,7 @@ app.post('/remoteurl', (req, res) => {
                 // console.log("Returning DXF Object:", dxfObj);
                 console.log("Successfully parsed DXF! Sending obj...");
                 res.json(dxfObj);
-            } catch(err) {
+            } catch (err) {
 
                 // Somehow an error reading and parsing DXF
                 console.log("Error reading DXF obj:", err.message);
@@ -151,7 +151,7 @@ app.post('/upload', (req, res) => {
             // console.log("PARSED DXF:", dxfObj);
             res.status(200).send(dxfObj);
 
-        } catch(err) {
+        } catch (err) {
             console.log(err);
             obj.included_colors.colors.push({
                 name: "None",
