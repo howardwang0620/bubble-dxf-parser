@@ -37,7 +37,7 @@ module.exports.polyLineCalculation = function polyLineCalculation(entity, dims) 
     var length = 0;
     var area = 0;
     var vt = entity.vertices;
-    for (var i = 0; i < vt.length - 1; i++) {
+    for(var i = 0; i < vt.length - 1; i++) {
         const x1 = vt[i].x;
         const y1 = vt[i].y;
 
@@ -65,7 +65,7 @@ module.exports.polyLineCalculation = function polyLineCalculation(entity, dims) 
 
     //make last calculation if first point and last points don't match
     //get length and area distance from last to first point
-    if (entity.shape) {
+    if(entity.shape) {
         const x1 = vt[vt.length - 1].x;
         const y1 = vt[vt.length - 1].y;
 
@@ -95,10 +95,10 @@ module.exports.splineCalculation = function splineCalculation(entity, dims) {
     var length = 0;
     var area = 0;
     var lastPoint;
-    for (var t = 0; t < 1; t += 0.0001) {
+    for(var t = 0; t < 1; t += 0.0001) {
         var point = bspline(t, degree, points, knots);
 
-        if (lastPoint) {
+        if(lastPoint) {
             const x1 = lastPoint[0];
             const y1 = lastPoint[1];
 

@@ -5,13 +5,13 @@ module.exports.mergeSplines = function mergeSplines(entities) {
     var merged = [];
 
     // iterate through all entities and add to merged
-    for (var i = 0; i < entities.length; i++) {
-        if (!visited[i]) {
+    for(var i = 0; i < entities.length; i++) {
+        if(!visited[i]) {
             var mergedList = [];
             var closed;
 
             // if entity is already a shape, set mergedlist to it
-            if (entities[i].closed) {
+            if(entities[i].closed) {
                 visited[i] = true;
                 mergedList.push(entities[i]);
                 closed = true;
@@ -37,7 +37,7 @@ module.exports.mergeSplines = function mergeSplines(entities) {
 // it will be closed if set size is equal to entities length meaning all start and end points coincide at least once
 function checkClosed(entities) {
     var set = new Set();
-    for (var entity of entities) {
+    for(var entity of entities) {
         var cp = entity.controlPoints;
         set.add(roundToNDec(cp[0].x, 6) + " " + roundToNDec(cp[0].y, 6));
         set.add(roundToNDec(cp[cp.length - 1].x, 6) + " " + roundToNDec(cp[cp.length - 1].y, 6));
@@ -63,7 +63,7 @@ function mergeSplinesDFS(entities, pos, list, visited) {
         y: roundToNDec(cp[cp.length - 1].y, 6),
     };
 
-    for (var i = 0; i < entities.length; i++) {
+    for(var i = 0; i < entities.length; i++) {
         var currCp = entities[i].controlPoints;
         var currStart = {
             x: roundToNDec(currCp[0].x, 6),
@@ -75,15 +75,15 @@ function mergeSplinesDFS(entities, pos, list, visited) {
         };
 
         // don't check visited nodes
-        if (!visited[i]) {
+        if(!visited[i]) {
 
             // x:x -> y:y where x:x is the entity passed, y:y is the entity iterating thru
-            if (end.x == currStart.x && end.y == currStart.y) {
+            if(end.x == currStart.x && end.y == currStart.y) {
 
                 // start:end -> start:end | start:end -> start:end
                 // in order
                 mergeSplinesDFS(entities, i, list, visited); // recursive call
-            } else if (end.x == currEnd.x && end.y == currEnd.y) {
+            } else if(end.x == currEnd.x && end.y == currEnd.y) {
 
                 // start:end -> end:start | start:end -> start:end
                 // reverse second node
@@ -91,7 +91,7 @@ function mergeSplinesDFS(entities, pos, list, visited) {
                 entities[i].knotValues = reverseKnots(entities[i].knotValues, entities[i].degreeOfSplineCurve); // reverse knot values as well
 
                 mergeSplinesDFS(entities, i, list, visited);
-            } else if (start.x == currStart.x && start.y == currStart.y) {
+            } else if(start.x == currStart.x && start.y == currStart.y) {
 
                 // end:start -> start:end | start:end -> start:end
                 // reverse first node
@@ -99,7 +99,7 @@ function mergeSplinesDFS(entities, pos, list, visited) {
                 list[list.length - 1].knotValues = reverseKnots(list[list.length - 1].knotValues, list[list.length - 1].degreeOfSplineCurve);
 
                 mergeSplinesDFS(entities, i, list, visited);
-            } else if (start.x == currEnd.x && start.y == currEnd.y) {
+            } else if(start.x == currEnd.x && start.y == currEnd.y) {
 
                 // end:start -> end:start | start:end -> start:end
                 // reverse both nodes
@@ -123,8 +123,8 @@ function reverseKnots(knots, degree) {
     var o = degree + 1;
     const c = knots[0] + knots[knots.length - 1];
 
-    for (var i = 0; i < knots.length; i++) {
-        if (i >= o && i <= knots.length - o - 1) {
+    for(var i = 0; i < knots.length; i++) {
+        if(i >= o && i <= knots.length - o - 1) {
             var s = knots[knots.length - 1 - i];
             reversed[i] = c - s;
         } else {

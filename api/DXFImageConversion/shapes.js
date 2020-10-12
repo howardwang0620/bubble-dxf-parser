@@ -33,24 +33,24 @@ THREEx.Math.polar = function(point, distance, angle) {
  * @param bulge - a value indicating how much to curve
  * @param segments - number of segments between the two given points
  */
-THREEx.BulgeGeometry = function ( startPoint, endPoint, bulge, segments ) {
+THREEx.BulgeGeometry = function(startPoint, endPoint, bulge, segments) {
 
     var vertex, i,
         center, p0, p1, angle,
         radius, startAngle,
         thetaAngle;
 
-    THREE.Geometry.call( this );
+    THREE.Geometry.call(this);
 
-    this.startPoint = p0 = startPoint ? new THREE.Vector2(startPoint.x, startPoint.y) : new THREE.Vector2(0,0);
-    this.endPoint = p1 = endPoint ? new THREE.Vector2(endPoint.x, endPoint.y) : new THREE.Vector2(1,0);
+    this.startPoint = p0 = startPoint ? new THREE.Vector2(startPoint.x, startPoint.y) : new THREE.Vector2(0, 0);
+    this.endPoint = p1 = endPoint ? new THREE.Vector2(endPoint.x, endPoint.y) : new THREE.Vector2(1, 0);
     this.bulge = bulge = bulge || 1;
 
     angle = 4 * Math.atan(bulge);
-    radius = p0.distanceTo(p1) / 2 / Math.sin(angle/2);
-    center = THREEx.Math.polar(startPoint, radius, THREEx.Math.angle2(p0,p1) + (Math.PI / 2 - angle/2));
+    radius = p0.distanceTo(p1) / 2 / Math.sin(angle / 2);
+    center = THREEx.Math.polar(startPoint, radius, THREEx.Math.angle2(p0, p1) + (Math.PI / 2 - angle / 2));
 
-    this.segments = segments = segments || Math.max( Math.abs(Math.ceil(angle/(Math.PI/18))), 6); // By default want a segment roughly every 10 degrees
+    this.segments = segments = segments || Math.max(Math.abs(Math.ceil(angle / (Math.PI / 18))), 6); // By default want a segment roughly every 10 degrees
     startAngle = THREEx.Math.angle2(center, p0);
     thetaAngle = angle / segments;
 
@@ -67,7 +67,7 @@ THREEx.BulgeGeometry = function ( startPoint, endPoint, bulge, segments ) {
 
 };
 
-THREEx.BulgeGeometry.prototype = Object.create( THREE.Geometry.prototype );
+THREEx.BulgeGeometry.prototype = Object.create(THREE.Geometry.prototype);
 
 
 //Handler for different dxf entities
@@ -98,8 +98,7 @@ function drawEntity(entity, data) {
         } else {
             console.log("Unsupported Dimension type: " + dimTypeEnum);
         }
-    }
-    else {
+    } else {
         console.log("Unsupported Entity Type: " + entity.type);
     }
     return mesh;
@@ -108,47 +107,47 @@ function drawEntity(entity, data) {
 function drawEllipse(entity, data) {
     var color = getColor(entity, data);
 
-    var xrad = Math.sqrt(Math.pow(entity.majorAxisEndPoint.x,2) + Math.pow(entity.majorAxisEndPoint.y,2));
-    var yrad = xrad*entity.axisRatio;
+    var xrad = Math.sqrt(Math.pow(entity.majorAxisEndPoint.x, 2) + Math.pow(entity.majorAxisEndPoint.y, 2));
+    var yrad = xrad * entity.axisRatio;
     var rotation = Math.atan2(entity.majorAxisEndPoint.y, entity.majorAxisEndPoint.x);
 
     var curve = new THREE.EllipseCurve(
-        entity.center.x,  entity.center.y,
+        entity.center.x, entity.center.y,
         xrad, yrad,
         entity.startAngle, entity.endAngle,
         false, // Always counterclockwise
         rotation
     );
 
-    var points = curve.getPoints( 50 );
-    var geometry = new THREE.BufferGeometry().setFromPoints( points );
-    var material = new THREE.LineBasicMaterial( {  linewidth: 1, color : color } );
+    var points = curve.getPoints(50);
+    var geometry = new THREE.BufferGeometry().setFromPoints(points);
+    var material = new THREE.LineBasicMaterial({ linewidth: 1, color: color });
 
     // Create the final object to add to the scene
-    var ellipse = new THREE.Line( geometry, material );
+    var ellipse = new THREE.Line(geometry, material);
     return ellipse;
 }
 
 function drawMtext(entity, data) {
     var color = getColor(entity, data);
 
-    var geometry = new THREE.TextGeometry( entity.text, {
+    var geometry = new THREE.TextGeometry(entity.text, {
         // font: font,
-        size: entity.height * (4/5),
+        size: entity.height * (4 / 5),
         height: 1
     });
-    var material = new THREE.MeshBasicMaterial( {color: color} );
-    var text = new THREE.Mesh( geometry, material );
+    var material = new THREE.MeshBasicMaterial({ color: color });
+    var text = new THREE.Mesh(geometry, material);
 
     // Measure what we rendered.
     var measure = new THREE.Box3();
-    measure.setFromObject( text );
+    measure.setFromObject(text);
 
-    var textWidth  = measure.max.x - measure.min.x;
+    var textWidth = measure.max.x - measure.min.x;
 
     // If the text ends up being wider than the box, it's supposed
     // to be multiline. Doing that in threeJS is overkill.
-    if (textWidth > entity.width) {
+    if(textWidth > entity.width) {
         console.log("Can't render this multipline MTEXT entity, sorry.", entity);
         return undefined;
     }
@@ -159,49 +158,49 @@ function drawMtext(entity, data) {
             // Top Left
             text.position.x = entity.position.x;
             text.position.y = entity.position.y - entity.height;
-        break;
+            break;
         case 2:
             // Top Center
-            text.position.x = entity.position.x - textWidth/2;
+            text.position.x = entity.position.x - textWidth / 2;
             text.position.y = entity.position.y - entity.height;
-        break;
+            break;
         case 3:
             // Top Right
             text.position.x = entity.position.x - textWidth;
             text.position.y = entity.position.y - entity.height;
-        break;
+            break;
 
         case 4:
             // Middle Left
             text.position.x = entity.position.x;
-            text.position.y = entity.position.y - entity.height/2;
-        break;
+            text.position.y = entity.position.y - entity.height / 2;
+            break;
         case 5:
             // Middle Center
-            text.position.x = entity.position.x - textWidth/2;
-            text.position.y = entity.position.y - entity.height/2;
-        break;
+            text.position.x = entity.position.x - textWidth / 2;
+            text.position.y = entity.position.y - entity.height / 2;
+            break;
         case 6:
             // Middle Right
             text.position.x = entity.position.x - textWidth;
-            text.position.y = entity.position.y - entity.height/2;
-        break;
+            text.position.y = entity.position.y - entity.height / 2;
+            break;
 
         case 7:
             // Bottom Left
             text.position.x = entity.position.x;
             text.position.y = entity.position.y;
-        break;
+            break;
         case 8:
             // Bottom Center
-            text.position.x = entity.position.x - textWidth/2;
+            text.position.x = entity.position.x - textWidth / 2;
             text.position.y = entity.position.y;
-        break;
+            break;
         case 9:
             // Bottom Right
             text.position.x = entity.position.x - textWidth;
             text.position.y = entity.position.y;
-        break;
+            break;
 
         default:
             return undefined;
@@ -219,10 +218,10 @@ function drawSpline(entity, data) {
 
     var interpolatedPoints = [];
     var curve;
-    if (entity.degreeOfSplineCurve === 2 || entity.degreeOfSplineCurve === 3) {
+    if(entity.degreeOfSplineCurve === 2 || entity.degreeOfSplineCurve === 3) {
         for(var i = 0; i + 2 < points.length; i = i + 2) {
-            if (entity.degreeOfSplineCurve === 2) {
-                            curve = new THREE.QuadraticBezierCurve(points[i], points[i + 1], points[i + 2]);
+            if(entity.degreeOfSplineCurve === 2) {
+                curve = new THREE.QuadraticBezierCurve(points[i], points[i + 1], points[i + 2]);
             } else {
                 curve = new THREE.QuadraticBezierCurve3(points[i], points[i + 1], points[i + 2]);
             }
@@ -230,12 +229,12 @@ function drawSpline(entity, data) {
         }
     } else {
         curve = new THREE.SplineCurve(points);
-        interpolatedPoints = curve.getPoints( 100 );
+        interpolatedPoints = curve.getPoints(100);
     }
 
-    var geometry = new THREE.BufferGeometry().setFromPoints( interpolatedPoints );
-    var material = new THREE.LineBasicMaterial( { linewidth: 1, color : color } );
-    var splineObject = new THREE.Line( geometry, material );
+    var geometry = new THREE.BufferGeometry().setFromPoints(interpolatedPoints);
+    var material = new THREE.LineBasicMaterial({ linewidth: 1, color: color });
+    var splineObject = new THREE.Line(geometry, material);
 
     return splineObject;
 }
@@ -275,7 +274,7 @@ function drawLine(entity, data) {
     }
 
     if(lineType && lineType.pattern && lineType.pattern.length !== 0) {
-        material = new THREE.LineDashedMaterial({ color: color, gapSize: 4, dashSize: 4});
+        material = new THREE.LineDashedMaterial({ color: color, gapSize: 4, dashSize: 4 });
     } else {
         material = new THREE.LineBasicMaterial({ linewidth: 1, color: color });
     }
@@ -286,7 +285,7 @@ function drawLine(entity, data) {
 
 function drawArc(entity, data) {
     var startAngle, endAngle;
-    if (entity.type === 'CIRCLE') {
+    if(entity.type === 'CIRCLE') {
         startAngle = entity.startAngle || 0;
         endAngle = startAngle + 2 * Math.PI;
     } else {
@@ -300,8 +299,8 @@ function drawArc(entity, data) {
         startAngle,
         endAngle);
 
-    var points = curve.getPoints( 32 );
-    var geometry = new THREE.BufferGeometry().setFromPoints( points );
+    var points = curve.getPoints(32);
+    var geometry = new THREE.BufferGeometry().setFromPoints(points);
 
     var material = new THREE.LineBasicMaterial({ color: getColor(entity, data) });
 
@@ -354,7 +353,7 @@ function drawText(entity, data) {
 
     geometry = new THREE.TextGeometry(entity.text, { height: 0, size: entity.textHeight || 12 });
 
-    if (entity.rotation) {
+    if(entity.rotation) {
         var zRotation = entity.rotation * Math.PI / 180;
         geometry.rotateZ(zRotation);
     }
@@ -381,7 +380,7 @@ function drawPoint(entity, data) {
     var numPoints = 1;
 
     var color = getColor(entity, data);
-    var colors = new Float32Array( numPoints*3 );
+    var colors = new Float32Array(numPoints * 3);
     colors[0] = color.r;
     colors[1] = color.g;
     colors[2] = color.b;
@@ -389,7 +388,7 @@ function drawPoint(entity, data) {
     geometry.colors = colors;
     geometry.computeBoundingBox();
 
-    material = new THREE.PointsMaterial( { size: 0.05, vertexColors: THREE.VertexColors } );
+    material = new THREE.PointsMaterial({ size: 0.05, vertexColors: THREE.VertexColors });
     point = new THREE.Points(geometry, material);
     return point;
 }
@@ -397,7 +396,7 @@ function drawPoint(entity, data) {
 function drawDimension(entity, data) {
     var block = data.blocks[entity.block];
 
-    if (!block || !block.entities) return null;
+    if(!block || !block.entities) return null;
 
     var group = new THREE.Object3D();
     // if(entity.anchorPoint) {
@@ -417,7 +416,7 @@ function drawDimension(entity, data) {
 function drawBlock(entity, data) {
     var block = data.blocks[entity.name];
 
-    if (!block.entities) return null;
+    if(!block.entities) return null;
 
     var group = new THREE.Object3D()
 

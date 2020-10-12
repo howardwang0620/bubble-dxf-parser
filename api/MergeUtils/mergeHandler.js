@@ -30,25 +30,25 @@ var { mergePolyLines } = require('./mergePolyLines');
 	}
 */
 module.exports.mergeOnType = function mergeOnType(entities, type) {
-	switch(type) {
-		case 'SPLINE':
-			return mergeSplines(entities);
-		case 'LINE':
-		case 'LWPOLYLINE':
-		case 'POLYLINE':
-			return mergePolyLines(entities);
-		case 'CIRCLE':
-		case 'ELLIPSE':
-			return reformat(entities, true);
-		case 'ARC':
-			return reformat(entities, false);
-		default:
-			return { message: `${type} NOT SUPPORTED YET` };
-	}
+    switch (type) {
+        case 'SPLINE':
+            return mergeSplines(entities);
+        case 'LINE':
+        case 'LWPOLYLINE':
+        case 'POLYLINE':
+            return mergePolyLines(entities);
+        case 'CIRCLE':
+        case 'ELLIPSE':
+            return reformat(entities, true);
+        case 'ARC':
+            return reformat(entities, false);
+        default:
+            return { message: `${type} NOT SUPPORTED YET` };
+    }
 };
 
 function reformat(entities, closed) {
-	return entities.map(e => {
-		return { merged: [e], closed: closed };
-	});
+    return entities.map(e => {
+        return { merged: [e], closed: closed };
+    });
 }

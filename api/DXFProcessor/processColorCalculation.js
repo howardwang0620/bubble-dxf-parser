@@ -10,12 +10,12 @@ module.exports.processColorCalculation = function processColorCalculation(colorD
     var totalLength = 0;
 
     // iterate by colors in color dict
-    for (const color in colorDict) {
+    for(const color in colorDict) {
 
         // iterate through each type
         // 2 steps  -> merge entities that are connected
         //          -> calculate lengths and areas of entities and append calculations to colorCalcs
-        for (const type in colorDict[color].entities) {
+        for(const type in colorDict[color].entities) {
 
             // entities variable contains all entities associated with given type
             let entities = colorDict[color].entities;
@@ -26,7 +26,7 @@ module.exports.processColorCalculation = function processColorCalculation(colorD
             // if an entity type is not supported, it will be caught here
             // delete entities[type] so it doesn't mess with next calculation step
             // add to unsupportedTypes set
-            if (!merged.message) entities[type] = merged;
+            if(!merged.message) entities[type] = merged;
             else {
 
                 // remove unsupported type from entities obj and add to unsupportedTypes set
@@ -40,7 +40,7 @@ module.exports.processColorCalculation = function processColorCalculation(colorD
 
         // Calculate lengths and areas for each type within respective color
         var calcs = calculate(colorDict[color].entities);
-        if (!calcs.message) {
+        if(!calcs.message) {
 
             // append color name and length + area calculations to colorCalcs
             colorCalcs.push({

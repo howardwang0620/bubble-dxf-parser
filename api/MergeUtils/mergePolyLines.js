@@ -5,14 +5,14 @@ module.exports.mergePolyLines = function mergePolyLines(entities) {
     var merged = [];
 
     // iterate through all entities and add to merged
-    for (var i = 0; i < entities.length; i++) {
+    for(var i = 0; i < entities.length; i++) {
 
-        if (!visited[i]) {
+        if(!visited[i]) {
             var mergedList = [];
             var closed;
 
             // if entity is already a shape, set mergedlist to it
-            if (entities[i].closed || entities[i].shape) {
+            if(entities[i].closed || entities[i].shape) {
                 visited[i] = true;
                 mergedList.push(entities[i]);
                 closed = true;
@@ -20,7 +20,7 @@ module.exports.mergePolyLines = function mergePolyLines(entities) {
                 // else group connected splines together
             } else {
                 mergedList = mergePolyLinesDFS(entities, i, [], visited);
-                if (mergedList.length == 1) closed = checkJointClosed(mergedList[0]);
+                if(mergedList.length == 1) closed = checkJointClosed(mergedList[0]);
                 else closed = checkDisjointClosed(mergedList);
             }
 
@@ -50,7 +50,7 @@ function checkJointClosed(entity) {
 // it will be closed if set size is equal to entities length meaning all start and end points coincide at least once
 function checkDisjointClosed(entities) {
     var set = new Set();
-    for (var entity of entities) {
+    for(var entity of entities) {
         var vt = entity.vertices;
         set.add(roundToNDec(vt[0].x, 6) + " " + roundToNDec(vt[0].y, 6));
         set.add(roundToNDec(vt[vt.length - 1].x, 6) + " " + roundToNDec(vt[vt.length - 1].y, 6));
@@ -76,7 +76,7 @@ function mergePolyLinesDFS(entities, pos, list, visited) {
         y: roundToNDec(vt[vt.length - 1].y, 6),
     };
 
-    for (var i = 0; i < entities.length; i++) {
+    for(var i = 0; i < entities.length; i++) {
         var currVt = entities[i].vertices;
         var currStart = {
             x: roundToNDec(currVt[0].x, 6),
@@ -88,27 +88,27 @@ function mergePolyLinesDFS(entities, pos, list, visited) {
         };
 
         // don't check visited nodes
-        if (!visited[i]) {
+        if(!visited[i]) {
 
             // check where entity's may connect
             // x:x -> y:y where x:x is the entity passed, y:y is the entity iterating thru
-            if (end.x == currStart.x && end.y == currStart.y) {
+            if(end.x == currStart.x && end.y == currStart.y) {
 
                 // in order
                 mergePolyLinesDFS(entities, i, list, visited); // recursive call
-            } else if (end.x == currEnd.x && end.y == currEnd.y) {
+            } else if(end.x == currEnd.x && end.y == currEnd.y) {
 
                 // start:end -> end:start | start:end -> start:end
                 // reverse second node
                 entities[i].vertices = entities[i].vertices.reverse(); // if end matches next nodes end, reverse the vertices so end matches start
                 mergePolyLinesDFS(entities, i, list, visited);
-            } else if (start.x == currStart.x && start.y == currStart.y) {
+            } else if(start.x == currStart.x && start.y == currStart.y) {
 
                 // end:start -> start:end | start:end -> start:end
                 // reverse first node
                 list[list.length - 1].vertices = list[list.length - 1].vertices.reverse();
                 mergePolyLinesDFS(entities, i, list, visited);
-            } else if (start.x == currEnd.x && start.y == currEnd.y) {
+            } else if(start.x == currEnd.x && start.y == currEnd.y) {
 
                 // end:start -> end:start | start:end -> start:end
                 // reverse both nodes

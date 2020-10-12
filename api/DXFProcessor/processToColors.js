@@ -10,7 +10,7 @@ module.exports.processDXFByColor = function processDXFByColor(dxf) {
     var colorDict = {}; // colorDict stores color -> entities mapping
 
     // init colors in layers
-    for (const layerNum in dxf.tables.layer.layers) {
+    for(const layerNum in dxf.tables.layer.layers) {
         var layer = dxf.tables.layer.layers[layerNum];
 
         // Init to default color (black) if no color
@@ -24,16 +24,16 @@ module.exports.processDXFByColor = function processDXFByColor(dxf) {
     }
 
     // init entity colors and entity types in color dict
-    for (const entityNum in dxf.entities) {
+    for(const entityNum in dxf.entities) {
         let entity = dxf.entities[entityNum];
         var color;
 
         // if entity has its own color, prioritize that color in insertion to colordict
-        if (entity.color != null) {
+        if(entity.color != null) {
             color = getHex(entity.color);
 
             // init color to colorDict
-            if (!colorDict[color]) {
+            if(!colorDict[color]) {
                 colorDict[color] = { entities: {} };
             }
         } else {
@@ -43,15 +43,15 @@ module.exports.processDXFByColor = function processDXFByColor(dxf) {
         }
 
         // append type to corresponding colors in colorDict
-        if (!colorDict[color].entities[entity.type]) {
+        if(!colorDict[color].entities[entity.type]) {
             colorDict[color].entities[entity.type] = [];
         }
         colorDict[color].entities[entity.type].push(entity);
     }
 
     // remove colors with no entities from included colors
-    for (const color in colorDict) {
-        if (Object.keys(colorDict[color].entities).length == 0) delete colorDict[color];
+    for(const color in colorDict) {
+        if(Object.keys(colorDict[color].entities).length == 0) delete colorDict[color];
     }
 
     return colorDict;
