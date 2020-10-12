@@ -2,7 +2,7 @@
 
 The DXF API is a function that receives 2 parameters:
 * Remote file url for DXF
-* Included Colors (color code and names both work)
+* Included Colors (hex color code)
 
 Here is a preview of what an example output looks like:
 
