@@ -26,10 +26,14 @@ module.exports.calculate = function calculate(types) {
 
     // dimensions to hold min,max x and y values
     var dimensions = {
-        min_x: Number.MAX_SAFE_INTEGER,
-        max_x: Number.MIN_SAFE_INTEGER,
-        min_y: Number.MAX_SAFE_INTEGER,
-        max_y: Number.MIN_SAFE_INTEGER,
+        min: {
+            x: Number.MAX_SAFE_INTEGER,
+            y: Number.MAX_SAFE_INTEGER,
+        },
+        max: {
+            x: Number.MIN_SAFE_INTEGER,
+            y: Number.MIN_SAFE_INTEGER
+        }
     };
 
     for(const type in types) {
@@ -47,8 +51,8 @@ module.exports.calculate = function calculate(types) {
     }
 
     // set extents
-    ret.x_extents = dimensions.max_x - dimensions.min_x;
-    ret.y_extents = dimensions.max_y - dimensions.min_y;
+    ret.x_extents = dimensions.max.x - dimensions.min.x;
+    ret.y_extents = dimensions.max.y - dimensions.min.y;
 
     return ret;
 };
