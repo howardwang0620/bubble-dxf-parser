@@ -50,12 +50,10 @@ app.post('/remoteurl', (req, res) => {
             console.log("Received file, building DXF obj...");
 
             var { dxf, included } = req.body;
-            s
             included = (!included || included == 'null' || included.trim() == "") ? null : included;
 
             var parser = new DxfParser();
             try {
-
                 dxf = parser.parseSync(ret);
                 const dxfObj = parseDXF(dxf, obj, included);
 
