@@ -9,7 +9,7 @@ var cors = require('cors');
 
 // Middleware for reading and parsing DXF file
 var DxfParser = require('dxf-parser');
-var { getBodyURL } = require('./readRemoteURL.js');
+var { getBodyURL } = require('./Utilities/utilities.js');
 var { parseDXF } = require('./DXFProcessor/parseDXF.js');
 
 var app = express();

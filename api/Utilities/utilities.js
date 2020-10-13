@@ -1,4 +1,25 @@
+const request = require('request');
 const namer = require('color-namer');
+
+// reads file from remote url
+function getBodyURL(url) {
+    const options = {
+        url: url,
+        method: 'GET'
+    };
+    return new Promise(function(resolve, reject) {
+        request.get(options, function(err, resp, body) {
+            console.log("Requesting URL...");
+            if(err) {
+                console.log("Error requesting URL");
+                reject(err);
+            } else {
+                resolve(body);
+            }
+        });
+    });
+};
+module.exports.getBodyURL = getBodyURL;
 
 // Converts color to hex
 function getHex(col) {
