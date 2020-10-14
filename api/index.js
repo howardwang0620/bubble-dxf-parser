@@ -28,6 +28,8 @@ app.post('/remoteurl', (req, res) => {
 
     // JSON payload
     var obj = {
+        dxf_x_extents: "",
+        dxf_y_extents: "",
         x_extents: "",
         y_extents: "",
         included_colors: {
@@ -116,6 +118,8 @@ app.post('/upload', (req, res) => {
     form.parse(req);
 
     var obj = {
+        dxf_x_extents: "",
+        dxf_y_extents: "",
         x_extents: "",
         y_extents: "",
         included_colors: {

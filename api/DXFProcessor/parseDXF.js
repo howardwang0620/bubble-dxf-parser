@@ -12,6 +12,13 @@ module.exports.parseDXF = function parseDXF(dxf, obj, includedColors) {
 
     console.log("Parsing DXF...");
 
+    // Gets dxf-extent values and set dxf-extents for obj
+    const dxf_xExtent = roundToNDec(dxf.header.$EXTMAX.x - dxf.header.$EXTMIN.x, 3);
+    const dxf_yExtent = roundToNDec(dxf.header.$EXTMAX.y - dxf.header.$EXTMIN.y, 3);
+
+    obj.dxf_x_extents = dxf_xExtent;
+    obj.dxf_y_extents = dxf_yExtent;
+
     // stores mapping of includedcolors -> entities and excludedcolors -> entities
     var colorDict = processDXFByColor(dxf);
 
@@ -21,7 +28,7 @@ module.exports.parseDXF = function parseDXF(dxf, obj, includedColors) {
     // will return length and area calculations for entities in respective included colors
     var colorCalcs = processColorCalculation(colorDict, unsupportedTypes);
 
-    // set extents here
+    // set calculated global extents here
     const xExtent = roundToNDec(colorCalcs.dimensions.max.x - colorCalcs.dimensions.min.x, 3)
     const yExtent = roundToNDec(colorCalcs.dimensions.max.y - colorCalcs.dimensions.min.y, 3)
 
