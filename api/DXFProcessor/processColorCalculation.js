@@ -9,6 +9,18 @@ module.exports.processColorCalculation = function processColorCalculation(colorD
     // total length of all entities
     var totalLength = 0;
 
+    // contains min,max values for x and y for determining overall extents
+    var overall_dimensions = {
+        min: {
+            x: Number.MAX_SAFE_INTEGER,
+            y: Number.MAX_SAFE_INTEGER,
+        },
+        max: {
+            x: Number.MIN_SAFE_INTEGER,
+            y: Number.MIN_SAFE_INTEGER,
+        }
+    }
+
     // iterate by colors in color dict
     for(const color in colorDict) {
 
@@ -42,13 +54,19 @@ module.exports.processColorCalculation = function processColorCalculation(colorD
         var calcs = calculate(colorDict[color].entities);
         if(!calcs.message) {
 
+            // set global extents
+            overall_dimensions.min.x = Math.min(overall_dimensions.min.x, calcs.dimensions.min.x)
+            overall_dimensions.max.x = Math.max(overall_dimensions.max.x, calcs.dimensions.max.x)
+            overall_dimensions.min.y = Math.min(overall_dimensions.min.y, calcs.dimensions.min.y)
+            overall_dimensions.max.y = Math.max(overall_dimensions.max.y, calcs.dimensions.max.y)
+
             // append color name and length + area calculations to colorCalcs
             colorCalcs.push({
                 name: color,
                 length: calcs.length,
                 area: calcs.area,
-                x_extents: calcs.x_extents,
-                y_extents: calcs.y_extents,
+                x_extents: calcs.dimensions.max.x - calcs.dimensions.min.x,
+                y_extents: calcs.dimensions.max.y - calcs.dimensions.min.y,
             });
             totalLength += calcs.length;
         }
@@ -57,5 +75,6 @@ module.exports.processColorCalculation = function processColorCalculation(colorD
     return {
         colors: colorCalcs,
         total_length: totalLength,
+        dimensions: overall_dimensions,
     };
 };

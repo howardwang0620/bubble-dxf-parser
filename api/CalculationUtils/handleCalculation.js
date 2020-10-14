@@ -20,19 +20,15 @@ module.exports.calculate = function calculate(types) {
     var ret = {
         length: 0,
         area: 0,
-        x_extents: 0,
-        y_extents: 0,
-    };
-
-    // dimensions to hold min,max x and y values
-    var dimensions = {
-        min: {
-            x: Number.MAX_SAFE_INTEGER,
-            y: Number.MAX_SAFE_INTEGER,
-        },
-        max: {
-            x: Number.MIN_SAFE_INTEGER,
-            y: Number.MIN_SAFE_INTEGER
+        dimensions: {
+            min: {
+                x: Number.MAX_SAFE_INTEGER,
+                y: Number.MAX_SAFE_INTEGER,
+            },
+            max: {
+                x: Number.MIN_SAFE_INTEGER,
+                y: Number.MIN_SAFE_INTEGER
+            }
         }
     };
 
@@ -40,7 +36,7 @@ module.exports.calculate = function calculate(types) {
         var mergedList = types[type];
         for(var i = 0; i < mergedList.length; i++) {
             var entity = mergedList[i];
-            var calcs = handleCalculation(entity, type, dimensions);
+            var calcs = handleCalculation(entity, type, ret.dimensions);
 
             // If entity is supported, add together lengths and areas for given type to ret object
             if(!calcs.message) {
@@ -49,10 +45,6 @@ module.exports.calculate = function calculate(types) {
             }
         }
     }
-
-    // set extents
-    ret.x_extents = dimensions.max.x - dimensions.min.x;
-    ret.y_extents = dimensions.max.y - dimensions.min.y;
 
     return ret;
 };
