@@ -32,7 +32,7 @@
     "node-fetch": "^2.6.0",
     "nodemon": "^2.0.4",
     "request": "^2.88.2",
-    "three": "^0.119.1",
+    "three": "^0.125.0",
     "three-canvas-renderer": "^2.0.0",
     "three-dxf": "^0.3.1",
     "three-png-stream": "^1.0.3",
