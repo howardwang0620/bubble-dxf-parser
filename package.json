@@ -29,7 +29,7 @@
     "http": "0.0.1-security",
     "image-data-uri": "^2.0.1",
     "mocha": "^8.1.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.7",
     "nodemon": "^2.0.4",
     "request": "^2.88.2",
     "three": "^0.119.1",
